@@ -1,9 +1,4 @@
-<h2>Clonar seu branch</h2>
-<h4><strong>git clone -b [seu_branch] https://github.com/renatokuramoto1990/arquivosOPE.git</strong></h4>
-<p><strong>**OBS.:</strong>Para o envio dos documentos usem o branch master. Para o desenvolvimento clonem o seu branch com o comando acima em uma pasta diferente da principal.</p>
-<p>Referente a aplicação todo o código será colocado na pasta Codes/Sistema_Comercial do clone do seu branch.</p>
-
-<h3>Repositório destinado ao compartilhamento e atualização dos documentos do projeto da OPE.</h3>
+<h3>Pasta destinado aos códigos da aplicação.</h3>
 
 <h4>** OBS: Sempre que atualizar colocar a data do commit EX: git commit -m "29022020"</h4>
 
@@ -19,3 +14,8 @@
 
 <p>** Uma vez feito o clone, para manter os arquivos locais atualizados com o do github use o comando <strong>git pull</strong> **</p>
 
+<h3>Instruções para usar o branch.</h3>
+<p>Crie um branch a partir do repositório master.</p>
+<p>No git sempre use o comando <strong>git checkout nome_branck</strong>.</p>
+<p>Na hora de realizar os passos para realizar o commit, verifique-se está no seu branch e não no master</p>
+<p>Realizar o merge somente quando a parte desenvolvida estiver concluída, e ao realizar o merge, informar o grupo</p>
