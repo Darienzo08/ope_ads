@@ -1,5 +1,5 @@
 <h2>Clonar seu branch</h2>
-<h4><strong>git clone -b [seu_branch] https://github.com/renatokuramoto1990/arquivosOPE.git</strong></h4>
+<h4><strong>git clone -b [seu_branch] https://github.com/Darienzo08/ope_ads.git</strong></h4>
 <p><strong>**OBS.:</strong>Para o envio dos documentos usem o branch master. Para o desenvolvimento clonem o seu branch com o comando acima em uma pasta diferente da principal.</p>
 <p>Referente a aplicação todo o código será colocado na pasta Codes/Sistema_Comercial do clone do seu branch.</p>
 
