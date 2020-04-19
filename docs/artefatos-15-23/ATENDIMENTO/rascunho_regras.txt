@@ -1,0 +1,9 @@
+1-o atendente anota os pedidos em comandas
+2-o atendente entrega uma comanda ao cliente
+3-o atendente deve entregar um cardápio ao cliente
+4-o atendente deve verificar a disponibilidade dos produtos
+5-o atendente deve encaminhar os itens solicitados a cozinha
+6-o atendente deve verificar, de tempos em tempos, se o cliente está satisfeito ou se necessita de algo
+7-
+8-
+9-
