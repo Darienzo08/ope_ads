@@ -1,0 +1,37 @@
+Caros,
+
+Seguem as considerações:
+
+Artefato 15:
+- falta listar a Capacidade "Gerenciar Produtos";
+- No cenário operacional "Vender Produtos": o nó operacional "Compras" não interage também
+com a entidade externa "Bares/Lanchonetes" (conforme DFD da Capacidade "Comprar Produtos")?
+- No cenário operacional "Realizar Contabilidade": o nó operacional "Financeiro" não interage também
+com a entidade externa "Outros Bares" (conforme DFD da Capacidade "Controlar Fluxo de Caixa")?
+
+Artefato 16:
+- DFD Capacidade "Atender Cliente":
+--Qual o motivo do processo "Anotar Pedido" acessar o depósito de dados "Devedores"?
+
+- DFD Capacidade "Preparar Pedido":
+-- não deveria ter um depósito de dados "Estoque"? Ou é o "Produto"?
+
+- DFD Capacidade "Gerir Caixa":
+-- ok
+
+- DFD Capacidade "Receber Pagamento":
+-- ok
+
+- DFD Capacidade "Comprar Produtos":
+-- Processo 2 não deveria estimular a entidade externa "Fornecedor"?
+
+- DFD Capacidade "Controlar Fluxo de Caixa":
+-- ok
+
+- DFD Capacidade "Realizar Planejamento Financeiro":
+-- não entendi a descrição do processo 7...
+
+- DFD Capacidade "Gerenciar Produtos":
+-- não está listada no artefato 15!
+-- não entendi a entidade externa "Compras"...
+-- depósito de dados "Produtos" refere-se ao "Estoque"?
