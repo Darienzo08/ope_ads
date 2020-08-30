@@ -1,9 +1,7 @@
-const express = require('express');
-const app = express();
+const app = require('./app');
+const http = require('http');
 const port = 3389;
 
-app.get('/', async(req, res) => {
-    res.send("Teste só para você ver que está funcionando")
-});
+const server = http.createServer(app);
 
-app.listen(port);
+server.listen(port);
