@@ -6,6 +6,7 @@ const Produto = require('../models/produto.model');
 const ProdutoDao = require('../controller/produto.controller')
 
 const connection = require('../config/connection');
+const ProdutoDAO = require('../controller/produto.controller');
 
 router.get('/', async (req, res) => {
 
@@ -87,18 +88,17 @@ router.post('/entrada/:id', async (req, res) => {
 
 router.post('/saida/:id', async (req, res) => {
 
-    connection.query(
-        'INSERT INTO estoque_saida(produto_saida, qtd_saida) VALUES(?, ?)',
-        [req.params.id, req.body.qtd],
+    try {
 
-        (error, results, fields) => {
-            if (error) res.send(error.code)
-            res.send({
-                id: req.params.id,
-                qtd: req.body.qtd
-            })
-        }
-    )
+        const quantidadeProduto = await new ProdutoDAO(connection).saida(req.params.id, req.body.quantidade)
+
+        res.send(quantidadeProduto)
+
+    } catch (e) {
+
+        res.send(e)
+    }
+
 })
 
 module.exports = router;

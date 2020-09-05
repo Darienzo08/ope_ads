@@ -91,7 +91,9 @@ class ProdutoDAO {
                         'INSERT INTO estoque.estoque_qtd (id_produto, qtd_produto) VALUES (?, ?)',
                         [results.insertId, 0],
 
-                        (error, results, fields) => {if (error) return reject(error)}
+                        (error, results, fields) => {
+                            if (error) return reject(error)
+                        }
                     )
                 }
             )
@@ -194,8 +196,6 @@ class ProdutoDAO {
 
                 (error, results, fields) => {
                     if (error) return reject(error.code)
-
-                    resolve(qtdProduto)
                 }
             )
 
@@ -211,6 +211,38 @@ class ProdutoDAO {
             )
 
         })
+
+    }
+
+    async saida(id, qtd) {
+
+        const quantidadeProduto = await this.quantidade_produto(id);
+
+        return new Promise((resolve, reject) => {
+
+            quantidadeProduto.quantidade -= qtd
+
+            this._connection.query(
+                'INSERT INTO estoque_saida(produto_saida, qtd_saida) VALUES(?, ?)',
+                [id, qtd],
+
+                (error, results, fields) => {
+                    if (error) return reject(error)
+
+                }
+            )
+
+            this._connection.query(
+                'UPDATE estoque_qtd SET qtd_produto = ? WHERE id_produto = ?',
+                [quantidadeProduto.quantidade, quantidadeProduto.id],
+
+                (error, results, fields) => {
+                    if (error) return reject(error.code)
+
+                    resolve(quantidadeProduto)
+                }
+            )
+        });
 
     }
 
