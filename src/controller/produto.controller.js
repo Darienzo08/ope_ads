@@ -14,7 +14,7 @@ class ProdutoDAO {
 
             this._connection.query(
 
-                'SELECT * FROM estoque_produto', (error, results, fields) => {
+                'SELECT estoque_produto.id_produto, nome_produto, preco_produto, descricao_produto, status_produto, estoque_qtd.qtd_produto FROM estoque_produto INNER JOIN estoque_qtd ON estoque_qtd.id_produto = estoque_produto.id_produto', (error, results, fields) => {
                     if (error) return reject(error);
 
                     results.forEach((raw_product) => {
@@ -24,7 +24,8 @@ class ProdutoDAO {
                             nome: raw_product.nome_produto,
                             preco: raw_product.preco_produto,
                             descricao: raw_product.descricao_produto,
-                            status: raw_product.status_produto
+                            status: raw_product.status_produto,
+                            quantidade: raw_product.qtd_produto
                         });
                     });
 
