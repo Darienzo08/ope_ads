@@ -3,120 +3,86 @@ const express = require('express');
 const router = express.Router();
 
 const Produto = require('../models/produto.model');
+const ProdutoDao = require('../controller/produto.controller')
 
 const connection = require('../config/connection');
 
 router.get('/', async (req, res) => {
 
-    const arrayProdutos = [];
+    try {
 
-    connection.query(
+        await new ProdutoDao(connection).listar().then(ArrayProdutos => res.send(ArrayProdutos))
 
-        'SELECT * FROM estoque_produto', (error, results, fields) => {
-            if (error) throw error;
+    } catch (e) {
 
-            results.forEach((raw_product) => {
+        res.send(e)
 
-                arrayProdutos.push(new Produto({
-                    id: raw_product.id_produto,
-                    nome: raw_product.nome_produto,
-                    preco: raw_product.preco_produto,
-                    descricao: raw_product.descricao_produto,
-                    status: raw_product.status_produto
-                }));
-            });
+    }
 
-            res.send(arrayProdutos);
-        }
-    )
 });
 
 router.post('/', async (req, res) => {
 
-    let camposEsperados = ["name", "price", "status"];
+    try {
 
-    camposEsperados.forEach((campo, index) => {
-        if (campo in req.body) {
-            delete camposEsperados[index]
-        }
-    });
+        const novoProduto = new Produto(req.body)
 
-    camposEsperados = camposEsperados.filter((campo) => {
-        return campo != null
-    })
+        await new ProdutoDao(connection).cadastrar(novoProduto).then(produto => res.send(produto))
 
-    if (camposEsperados.length > 0) {
-        res.status(400)
-        res.send({
-            status: 400,
-            message: `Campos ${camposEsperados} não enviados`
-        })
+    } catch (e) {
 
-    } else {
-        connection.query(
-            'INSERT INTO estoque_produto(nome_produto, preco_produto, descricao_produto, status_produto) VALUES (?, ?, ?, ?)',
-            [req.body.name, req.body.price, req.body.description, req.body.status],
+        res.send(e)
 
-            (error, results, fields) => {
-                if (error) res.send(error.code)
-                res.send(new Produto({
-                    id: results.insertId,
-                    nome: req.body.name,
-                    preco: req.body.price,
-                    descricao: req.body.description,
-                    status: req.body.status
-                }))
-            }
-        )
     }
+
 })
 
 router.put('/:id', async (req, res) => {
 
-    connection.query(
-        'UPDATE estoque_produto SET nome_produto=?, preco_produto=?, descricao_produto=? WHERE id_produto=?',
-        [req.body.name, req.body.price, req.body.description, req.params.id],
+    try {
 
-        (error, results, fields) => {
-            if (error) res.send(error)
-            res.send(new Produto({
-                id: req.params.id,
-                nome: req.body.name,
-                preco: req.body.price,
-                descricao: req.body.description
-            }))
-        }
-    )
+        const produto = new Produto(await new ProdutoDao(connection).alterar(req.params.id, req.body))
+
+        res.send(produto)
+
+    } catch (e) {
+
+        res.send(e)
+
+    }
 
 })
 
 router.delete('/:id', async (req, res) => {
 
-    connection.query(
-        'UPDATE estoque_produto SET status_produto=? WHERE id_produto=?',
-        [req.body.status, req.params.id],
+    try {
 
-        (error, results, fields) => {
-            if (error) res.send(error.code)
-            res.send('Produto alterado')
-        }
-    )
+        const produto = new Produto(await new ProdutoDao(connection).alterar_status(req.params.id))
+
+        res.send(produto)
+
+    } catch (e) {
+
+        res.send(e)
+
+    }
+
 })
 
 router.post('/entrada/:id', async (req, res) => {
 
-    connection.query(
-        'INSERT INTO estoque_entrada(produto_entrada, qtd_entrada) VALUES(?, ?)',
-        [req.params.id, req.body.quantidade],
+    try {
 
-        (error, results, fields) => {
-            if (error) res.send(error.code)
-            res.send({
-                id: req.params.id,
-                quantidade: req.body.quantidade
-            })
-        }
-    )
+        const qtdProduto = await new ProdutoDao(connection).entrada(req.params.id, req.body.quantidade)
+
+        res.send(qtdProduto)
+
+    } catch (e) {
+
+        res.send(e)
+
+    }
+
 })
 
 router.post('/saida/:id', async (req, res) => {

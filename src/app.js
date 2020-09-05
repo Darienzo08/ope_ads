@@ -20,7 +20,7 @@ app.use('/produtos', rotaProdutos)
 app.get('/', async(req, res, next) => {
     res.send('OK')
 });
-/*
+
 // Tratamento de erro
 app.use((req, res, next) => {
     const error = new Error("Not found page");
@@ -28,6 +28,6 @@ app.use((req, res, next) => {
     res.status(404);
     next(error.message);
 });
-*/
+
 
 module.exports = app;
