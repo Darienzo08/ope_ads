@@ -11,7 +11,7 @@ app.use(bodyParser.urlencoded({
     extended: false
 }));
 
-app.use(express.static('src/client'));
+app.use(express.static('ope_ads/src/client'));
 
 app.use(bodyParser.json()); // Apenas no formato json
 
