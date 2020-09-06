@@ -31,8 +31,7 @@ function listarProdutos() {
 
     $.ajax({
 
-        url: 'http://localhost:3389/produtos', // URL do recurso requisitado
-        crossDomain: true,
+        url: '/produtos', // URL do recurso requisitado
         method: 'GET', // método de requisição solicitado
         dataType: 'json' // tipo de resposta esperada do servidor
 
