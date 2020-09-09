@@ -39,27 +39,90 @@
     ***********************************-->
     <div id="main-wrapper">
 
-        <!-- Modal -->
+        <!--**********************************
+            Modals start
+        ***********************************-->
         <div class="modal fade" id="modal-produto">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Alterar produto</h5>
+                        <h5 class="modal-title" id="modal-produto-title"></h5>
                         <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
                         </button>
                     </div>
+
                     <div class="modal-body">
 
+                        <div class="row">
 
+                            <div class="col-12">
+                                <label for="nome-novo-produto"><b>Nome do produto: </b></label>
+                            </div>
+                            <div class="col-12 mb-2">
+                                <input type="text" class="form-control h-100 w-100" id="nome-novo-produto">
+                            </div>
+
+                            <div class="col-12">
+                                <label for="desc-novo-produtoo"><b>Descrição do produto: </b></label>
+                            </div>
+                            <div class="col-12 mb-2">
+                                <textarea class="form-control h-100 w-100" id="desc-novo-produto"></textarea>
+                            </div>
+
+                            <div class="col-4 mt-3">
+                                <label for="preco-novo-produto"><b>Preço do produto: </b></label>
+                            </div>
+                            <div class="col-8">
+                                <input type="text" class="form-control h-100" id="preco-novo-produto">
+                            </div>
+
+                        </div>
 
                     </div>
+
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                        <button type="button" class="btn btn-primary d-none" id="cadastrar-produto">Cadastrar</button>
+                        <button type="button" class="btn btn-primary d-none" id="alterar-produto">Alterar</button>
                     </div>
                 </div>
             </div>
         </div>
+
+        <div class="modal fade" id="modal-inativar-produto">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modal-inativar-produto-title"></h5>
+                        <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+
+                        <div class="row">
+
+                            <div class="col-12">
+
+                                <p>Tem certeza que deseja inativar o produto, esta ação poderá ser desfeita
+                                    posteriromente</p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                        <button type="button" class="btn btn-danger" id="inativar-produto">Confirmar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--**********************************
+            Modals start
+        ***********************************-->
 
         <!--**********************************
             Nav header start
@@ -128,13 +191,13 @@
                 <ul class="metismenu" id="menu">
                     <li class="nav-label">MENU PRINCIPAL</li>
                     <li>
-                        <a class="has-arrow" href="#" aria-expanded="false">
+                        <a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
                             <i class="icon-speedometer menu-icon"></i><span class="nav-text">Estoque</span>
                         </a>
                         <ul aria-expanded="false">
                             <li><a href="index.html">Produtos</a></li>
-                            <li><a href="#">Fornecedores</a></li>
-                            <li><a href="#">Relatórios</a></li>
+                            <li><a href="javascript:void(0)">Fornecedores</a></li>
+                            <li><a href="javascript:void(0)">Relatórios</a></li>
                         </ul>
                     </li>
                     <li>
@@ -142,7 +205,7 @@
                             <i class="icon-speedometer menu-icon"></i><span class="nav-text">Cardápio</span>
                         </a>
                         <ul aria-expanded="false">
-                            <li><a href="#">Pratos</a></li>
+                            <li><a href="javascript:void(0)">Pratos</a></li>
                         </ul>
                     </li>
                     <li>
@@ -150,8 +213,8 @@
                             <i class="icon-speedometer menu-icon"></i><span class="nav-text">Controle de caixa</span>
                         </a>
                         <ul aria-expanded="false">
-                            <li><a href="#">Relatório de entrada</a></li>
-                            <li><a href="#">Relatório de saída</a></li>
+                            <li><a href="javascript:void(0)">Relatório de entrada</a></li>
+                            <li><a href="javascript:void(0)">Relatório de saída</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -197,7 +260,8 @@
 
                                     <div class="col-12 col-lg-3">
 
-                                        <button class="btn m-2 ml-lg-5 btn-primary w-100" id="btn-cadastrar"> Cadastrar novo produto
+                                        <button class="btn m-2 ml-lg-5 btn-primary w-100" id="btn-cadastrar"> Cadastrar
+                                            novo produto
                                         </button>
 
                                     </div>
