@@ -1,25 +1,37 @@
 const btnBuscar = $('#btn-buscar');
 const btnCadastrar = $('#btn-cadastrar');
-const btnCadastrarNovoProduto = $('#cadastrar-produto')
-const btnAlterarProduto = $('#alterar-produto')
-const btnInativarProduto = $('#inativar-produto')
-const btnEntradaSaida = $('#btn-entrada-saida')
+const btnCadastrarNovoProduto = $('#cadastrar-produto');
+const btnAlterarProduto = $('#alterar-produto');
+const btnInativarProduto = $('#inativar-produto');
+const btnEntradaSaida = $('#btn-entrada-saida');
+const btnEntrada = $('#btn-entrada');
+const btnSaida = $('#btn-saida');
+const btnconfirmarEntrada = $('#btn-confirmar-entrada')
+const btnconfirmarSaida = $('#btn-confirmar-saida')
 
 const txtProduto = $('#txt-produto');
-const nomeNovoProduto = $('#nome-novo-produto')
-const descNovoProduto = $('#desc-novo-produto')
-const precoNovoProduto = $('#preco-novo-produto')
+const nomeNovoProduto = $('#nome-novo-produto');
+const descNovoProduto = $('#desc-novo-produto');
+const precoNovoProduto = $('#preco-novo-produto');
+const quantidadeProdutos = $('#qtd-produtos');
+
+const selectProdutos = $('#select-produtos');
 
 const modalProduto = $('#modal-produto');
-const modalProdutoTitle = $('#modal-produto-title')
+const modalProdutoTitle = $('#modal-produto-title');
 
-const modalInativarProduto = $('#modal-inativar-produto')
-const modalInativarProdutoTitle = $('#modal-inativar-produto-title')
+const modalInativarProduto = $('#modal-inativar-produto');
+const modalInativarProdutoTitle = $('#modal-inativar-produto-title');
 
 const modalOpcao = $('#modal-opcao');
 
+const modalEntradaSaida = $('#modal-entrada-saida');
+const modalEntradaSidaTitle = $('#modal-entrada-saida-title')
+
 const produto = {};
 const novoProduto = {};
+
+$('#modal-produtos').load('modal-produtos.html')
 
 $(document).ready(function () {
 
@@ -155,9 +167,64 @@ $(document).ready(function () {
 
     })
 
+    // Invoca o modal de entrada e saída
     btnEntradaSaida.click(function () {
 
         modalOpcao.modal('show');
+
+    })
+
+    btnEntrada.click(function () {
+
+        btnconfirmarEntrada.removeClass('d-none')
+        btnconfirmarSaida.addClass('d-none')
+
+        montarSelectProdutos();
+
+        modalEntradaSidaTitle.text('Entrada de Produtos')
+
+        modalEntradaSaida.modal('show');
+
+    })
+
+    btnSaida.click(function () {
+
+        btnconfirmarEntrada.addClass('d-none')
+        btnconfirmarSaida.removeClass('d-none')
+
+        montarSelectProdutos();
+
+        modalEntradaSidaTitle.text('Saída de Produtos');
+
+        modalEntradaSaida.modal('show');
+
+    })
+
+    btnconfirmarEntrada.click(function () {
+
+        const produto = {};
+
+        const optionProdutos = $('#select-produtos option:selected')
+
+        produto.id = parseInt(optionProdutos[0].attributes.id.value);
+
+        produto.quantidade = parseInt(quantidadeProdutos.val())
+
+        entradaProdutos(produto)
+
+    })
+
+    btnconfirmarSaida.click(function() {
+
+        const produto = {};
+
+        const optionProdutos = $('#select-produtos option:selected')
+
+        produto.id = parseInt(optionProdutos[0].attributes.id.value);
+
+        produto.quantidade = parseInt(quantidadeProdutos.val())
+
+        saidaProdutos(produto);
 
     })
 
@@ -305,6 +372,92 @@ function inativarProduto(produto) {
         btnInativarProduto.prop('disabled', false);
 
         modalInativarProduto.modal('hide');
+
+    })
+
+}
+
+function montarSelectProdutos() {
+
+    selectProdutos.empty();
+
+    $.ajax({
+        url: '/produtos', // URL do recurso requisitado
+        method: 'GET', // método de requisição solicitado
+        dataType: 'json' // tipo de resposta esperada do servidor
+
+    }).done(function (resposta) {
+
+        selectProdutos.append('<option></option>');
+
+        $.each(resposta, function (index, produto) {
+
+            selectProdutos.append('<option id="' + produto.id + '" data-quantidade = "' + produto.quantidade + '">' +
+                produto.nome + ' - ' + produto.quantidade + ' em estoque</option>');
+
+        })
+
+    })
+
+}
+
+function entradaProdutos(produto) {
+
+    btnconfirmarEntrada.prop('disabled', true);
+
+    $.ajax({
+        url: '/produtos/entrada/' + produto.id, // URL do recurso requisitado
+        method: 'POST', // método de requisição solicitado
+        dataType: 'json',
+        contentType: 'application/json', // tipo de resposta esperada do servidor
+        data: JSON.stringify(produto) // dados a serem enviados no corpo da requisiçãso
+
+    }).done(function (resposta) {
+
+        listarProdutos();
+
+    }).fail(function (error) {
+
+        alert('Ocorreu um erro, tente novamente')
+
+    }).always(function () {
+
+        montarSelectProdutos();
+
+        quantidadeProdutos.val("");
+
+        btnconfirmarEntrada.prop('disabled', false);
+
+    })
+
+}
+
+function saidaProdutos(produto) {
+
+    btnconfirmarSaida.prop('disabled', true);
+
+    $.ajax({
+        url: '/produtos/saida/' + produto.id, // URL do recurso requisitado
+        method: 'POST', // método de requisição solicitado
+        dataType: 'json',
+        contentType: 'application/json', // tipo de resposta esperada do servidor
+        data: JSON.stringify(produto) // dados a serem enviados no corpo da requisiçãso
+
+    }).done(function (resposta) {
+
+        listarProdutos();
+
+    }).fail(function (error) {
+
+        alert('Ocorreu um erro, tente novamente')
+
+    }).always(function () {
+
+        montarSelectProdutos();
+
+        quantidadeProdutos.val("");
+
+        btnconfirmarSaida.prop('disabled', false);
 
     })
 

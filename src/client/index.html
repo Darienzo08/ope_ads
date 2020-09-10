@@ -129,9 +129,11 @@
                     <div class="modal-body">
                         <div class="row">
 
-                            <div class="col-6"><button type="button" class="btn btn-primary w-100 p-2">Entrada</button></div>
+                            <div class="col-6"><button type="button" data-dismiss="modal"
+                                    class="btn btn-primary w-100 p-2" id="btn-entrada">Entrada</button></div>
 
-                            <div class="col-6"><button type="button" class="btn btn-primary w-100 p-2">Saída</button></div>
+                            <div class="col-6"><button type="button" data-dismiss="modal"
+                                    class="btn btn-primary w-100 p-2" id="btn-saida">Saída</button></div>
 
                         </div>
                     </div>
@@ -144,7 +146,7 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Entrada de produtos</h5>
+                        <h5 class="modal-title" id="modal-entrada-saida-title"></h5>
                         <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
                         </button>
                     </div>
@@ -152,9 +154,27 @@
                     <div class="modal-body">
                         <div class="row">
 
-                            <select class="form-control"></select>
+                            <div class="col-12 mb-2">
+
+                                <label for="select-produtos">Selecione o produto</label>
+                                <select class="form-control" id="select-produtos"></select>
+
+                            </div>
+
+                            <div class="col-12">
+
+                                <label for="select-produtos">Digite a quantidade</label>
+                                <input type="text" class="form-control" id="qtd-produtos">
+
+                            </div>
 
                         </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                        <button type="button" class="btn btn-primary d-none" id="btn-confirmar-entrada">Confirmar entrada</button>
+                        <button type="button" class="btn btn-danger d-none" id="btn-confirmar-saida">Confirmar Saída</button>
                     </div>
 
                 </div>
