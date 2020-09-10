@@ -3,6 +3,7 @@ const btnCadastrar = $('#btn-cadastrar');
 const btnCadastrarNovoProduto = $('#cadastrar-produto')
 const btnAlterarProduto = $('#alterar-produto')
 const btnInativarProduto = $('#inativar-produto')
+const btnEntradaSaida = $('#btn-entrada-saida')
 
 const txtProduto = $('#txt-produto');
 const nomeNovoProduto = $('#nome-novo-produto')
@@ -14,6 +15,11 @@ const modalProdutoTitle = $('#modal-produto-title')
 
 const modalInativarProduto = $('#modal-inativar-produto')
 const modalInativarProdutoTitle = $('#modal-inativar-produto-title')
+
+const modalOpcao = $('#modal-opcao');
+
+const produto = {};
+const novoProduto = {};
 
 $(document).ready(function () {
 
@@ -71,7 +77,12 @@ $(document).ready(function () {
 
         modalProdutoTitle.text('Cadastrar produto')
 
+        btnAlterarProduto.addClass('d-none');
         btnCadastrarNovoProduto.removeClass('d-none');
+
+        nomeNovoProduto.val("");
+        descNovoProduto.val("");
+        precoNovoProduto.val("");
 
         modalProduto.modal('show')
 
@@ -79,8 +90,6 @@ $(document).ready(function () {
 
     // Realiza o cadastro
     btnCadastrarNovoProduto.click(function () {
-
-        const novoProduto = {};
 
         novoProduto.nome = nomeNovoProduto.val();
         novoProduto.descricao = descNovoProduto.val();
@@ -91,12 +100,12 @@ $(document).ready(function () {
     })
 
     // Invoca e preenche o modal de alteração
-    dtProducts.on('click', 'tr td a i.fa-pencil', function (e) {
+    dtProducts.off('click').on('click', 'tr td a i.fa-pencil', function () {
+
+        btnCadastrarNovoProduto.addClass('d-none');
 
         const row = $(this).closest("tr")
         const dadosProduto = dtProducts.row(row).data()
-
-        const produto = {};
 
         produto.id = dadosProduto[6]
         produto.nome = dadosProduto[0]
@@ -111,26 +120,24 @@ $(document).ready(function () {
         descNovoProduto.val(produto.descricao);
         precoNovoProduto.val(produto.preco);
 
-        // Salva a alteração
-        btnAlterarProduto.click(function () {
+    })
 
-            produto.nome = nomeNovoProduto.val();
-            produto.descricao = descNovoProduto.val();
-            produto.preco = precoNovoProduto.val();
+    // Salva a alteração
+    btnAlterarProduto.click(function () {
 
-            alterarProduto(produto);
+        produto.nome = nomeNovoProduto.val();
+        produto.descricao = descNovoProduto.val();
+        produto.preco = precoNovoProduto.val();
 
-        })
+        alterarProduto(produto);
 
     })
 
     // Invoca e preenche o modal de inativação
-    dtProducts.on('click', 'tr td a i.fa-close', function (e) {
+    dtProducts.off('click.fa-close').on('click.fa-close', 'tr td a i.fa-close', function () {
 
         const row = $(this).closest("tr")
         const dadosProduto = dtProducts.row(row).data()
-
-        const produto = {};
 
         produto.id = dadosProduto[6]
         produto.nome = dadosProduto[0]
@@ -139,11 +146,18 @@ $(document).ready(function () {
         modalInativarProduto.modal('show');
         modalInativarProdutoTitle.text('Inativar: ' + produto.nome)
 
-        btnInativarProduto.click(function () {
+    })
 
-            inativarProduto(produto);
+    // Realiza a inativação
+    btnInativarProduto.click(function () {
 
-        })
+        inativarProduto(produto);
+
+    })
+
+    btnEntradaSaida.click(function () {
+
+        modalOpcao.modal('show');
 
     })
 
@@ -178,7 +192,7 @@ function listarProdutos() {
                 // Coluna 04
                 status,
                 // Coluna 05
-                '<a href="javascript:void(0)"><i class="fa fa-pencil color-muted mr-1"></i></a>' +
+                '<a href="javascript:void(0)"><i class="fa fa-pencil color-muted mr-2"></i></a>' +
                 '<a href="javascript:void(0)"><i class="fa fa-close color-danger"></i></a>',
                 // Hidden 06
                 produto.id,
@@ -224,8 +238,6 @@ function cadastrarProdutos(novoProduto) {
 
         btnCadastrarNovoProduto.prop('disabled', false);
 
-        btnCadastrarNovoProduto.addClass('d-none');
-
         nomeNovoProduto.val("");
         descNovoProduto.val("");
         precoNovoProduto.val("");
@@ -260,12 +272,6 @@ function alterarProduto(produto) {
     }).always(function () {
 
         btnAlterarProduto.prop('disabled', false);
-
-        btnAlterarProduto.addClass('d-none');
-
-        nomeNovoProduto.val("");
-        descNovoProduto.val("");
-        precoNovoProduto.val("");
 
         modalProduto.modal('hide');
 
