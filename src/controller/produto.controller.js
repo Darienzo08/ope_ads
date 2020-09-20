@@ -14,7 +14,8 @@ class ProdutoDAO {
 
             this._connection.query(
 
-                'SELECT estoque_produto.id_produto, nome_produto, preco_produto, descricao_produto, status_produto, estoque_qtd.qtd_produto FROM estoque_produto INNER JOIN estoque_qtd ON estoque_qtd.id_produto = estoque_produto.id_produto', (error, results, fields) => {
+                'SELECT id_produto, nome_produto, preco_produto, descricao_produto, status_produto, qtd_produto FROM estoque_produto', (error, results, fields) => {
+
                     if (error) return reject(error);
 
                     results.forEach((raw_product) => {
@@ -55,7 +56,8 @@ class ProdutoDAO {
                             nome: results[0].nome_produto,
                             preco: results[0].preco_produto,
                             descricao: results[0].descricao_produto,
-                            status: results[0].status_produto
+                            status: results[0].status_produto,
+                            quantidade: results[0].qtd_produto
                         });
 
                     else
@@ -87,15 +89,6 @@ class ProdutoDAO {
                         preco: produto.preco,
                         descricao: produto.descricao
                     })
-
-                    this._connection.query(
-                        'INSERT INTO estoque.estoque_qtd (id_produto, qtd_produto) VALUES (?, ?)',
-                        [results.insertId, 0],
-
-                        (error, results, fields) => {
-                            if (error) return reject(error)
-                        }
-                    )
                 }
             )
         })
@@ -130,7 +123,6 @@ class ProdutoDAO {
                 }
             )
         })
-
     }
 
     async alterar_status(id) {
@@ -157,71 +149,108 @@ class ProdutoDAO {
 
     }
 
-    async quantidade_produto(id) {
+    async entrada(id, qtd, price, idFornecedor) {
 
-        const produto = await this.listar_id(id)
-        let qtd = 0;
+        const produto = await this.listar_id(id);
 
         return new Promise((resolve, reject) => {
 
+            produto.quantidade += qtd;
+
             this._connection.query(
-                'SELECT * FROM estoque_qtd WHERE id_produto = ?', [id],
+                'INSERT INTO estoque_entrada(produto_entrada, qtd_entrada, preco_entrada, id_fornecedor) VALUES(?, ?, ?, ?)',
+                [produto.id, qtd, price, idFornecedor],
+
+                (error, results, fields) => {
+                    if (error) return reject(error.code)
+                }
+            )
+
+            this._connection.query(
+                'UPDATE estoque_produto SET qtd_produto = ? WHERE id_produto = ?',
+                [produto.quantidade, id],
 
                 (error, results, fields) => {
                     if (error) return reject(error.code)
 
-                    if (results.length > 0) qtd = results[0].qtd_produto
+                    resolve(produto)
+                }
+            )
+        })
+    }
+
+    async listarEntradaId(id) {
+
+        return await new Promise((resolve, reject) => {
+            this._connection.query(
+                'SELECT * FROM estoque_entrada WHERE id_entrada = ?',
+                [id],
+
+                (error, results, fields) => {
+                    if (error) return reject(error.code)
 
                     resolve({
-                        id: id,
-                        produto: produto.nome,
-                        quantidade: qtd
+                        id_entrada: results[0].id_entrada,
+                        produto_entrada: results[0].produto_entrada,
+                        qtd_entrada: results[0].qtd_entrada,
+                        preco_entrada: results[0].preco_entrada,
+                        id_fornecedor: results[0].id_fornecedor
                     })
                 }
             )
         })
-
     }
 
-    async entrada(id, qtd) {
 
-        const qtdProduto = await this.quantidade_produto(id)
+    async retificarEntrada(id, idEntrada, price, idFornecedor, qtd) {
 
-        return new Promise((resolve, reject) => {
+        const entrada = await this.listarEntradaId(idEntrada)
 
-            qtdProduto.quantidade += qtd;
+        const produto = {};
+
+        return await new Promise((resolve, reject) => {
 
             this._connection.query(
-                'INSERT INTO estoque_entrada(produto_entrada, qtd_entrada) VALUES(?, ?)',
-                [qtdProduto.id, qtd],
+                'UPDATE estoque_entrada SET qtd_entrada = ? , SET preco_entrada = ?, SET id_fornecedor = ?, SET alterado_entrada = 1 WHERE id_entrada = ?',
+                [qtd, price, idFornecedor, idEntrada],
 
                 (error, results, fields) => {
                     if (error) return reject(error.code)
                 }
             )
 
+            produto.quantidade = entrada.qtd_entrada;
+
+            if (entrada.qtd_entrada > qtd) {
+                produto.quantidade = entrada.qtd_entrada - qtd;
+            }
+
+            if (entrada.qtd_entrada < qtd) {
+                produto.quantidade = entrada.qtd_entrada + qtd;
+            }
+
+            entrada.qtd_entrada = qtd;
+
             this._connection.query(
-                'UPDATE estoque_qtd SET qtd_produto = ? WHERE id_produto = ?',
-                [qtdProduto.quantidade, qtdProduto.id],
+                'UPDATE estoque_produto SET qtd_produto = ? WHERE id_produto = ?',
+                [produto.quantidade, id],
 
                 (error, results, fields) => {
                     if (error) return reject(error.code)
 
-                    resolve(qtdProduto)
+                    resolve(entrada)
                 }
             )
-
         })
-
     }
 
     async saida(id, qtd) {
 
-        const quantidadeProduto = await this.quantidade_produto(id);
+        const produto = await this.listar_id(id)
 
         return new Promise((resolve, reject) => {
 
-            quantidadeProduto.quantidade -= qtd
+            produto.quantidade -= qtd
 
             this._connection.query(
                 'INSERT INTO estoque_saida(produto_saida, qtd_saida) VALUES(?, ?)',
@@ -234,13 +263,13 @@ class ProdutoDAO {
             )
 
             this._connection.query(
-                'UPDATE estoque_qtd SET qtd_produto = ? WHERE id_produto = ?',
-                [quantidadeProduto.quantidade, quantidadeProduto.id],
+                'UPDATE estoque_produto SET qtd_produto = ? WHERE id_produto = ?',
+                [produto.quantidade, id],
 
                 (error, results, fields) => {
                     if (error) return reject(error.code)
 
-                    resolve(quantidadeProduto)
+                    resolve(produto)
                 }
             )
         });

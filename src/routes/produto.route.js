@@ -76,7 +76,7 @@ router.post('/entrada/:id', async (req, res) => {
 
     try {
 
-        const qtdProduto = await new ProdutoDao(connection).entrada(req.params.id, req.body.quantidade)
+        const qtdProduto = await new ProdutoDao(connection).entrada(req.params.id, req.body.quantidade, req.body.preco, req.body.idFornecedor)
 
         res.send(qtdProduto)
 
@@ -86,6 +86,21 @@ router.post('/entrada/:id', async (req, res) => {
 
     }
 
+})
+
+router.put('/entrada/:id', async(req, res) => {
+    try {
+
+        const qtdEntrada = await new ProdutoDAO(connection).retificarEntrada(req.body.id, req.params.id, req.body.preco, req.body.idFornecedor,
+            req.body.qtd)
+
+        res.send(qtdEntrada)
+        
+    } catch (e) {
+
+        res.send(e)
+        
+    }
 })
 
 router.post('/saida/:id', async (req, res) => {
