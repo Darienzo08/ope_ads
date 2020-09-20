@@ -187,20 +187,17 @@ class ProdutoDAO {
                 [id],
 
                 (error, results, fields) => {
-                    if (error) return reject(error.code)
+                    if (error) return reject(error)
 
-                    resolve({
-                        id_entrada: results[0].id_entrada,
+                    resolve({id_entrada: results[0].id_entrada,
                         produto_entrada: results[0].produto_entrada,
                         qtd_entrada: results[0].qtd_entrada,
                         preco_entrada: results[0].preco_entrada,
-                        id_fornecedor: results[0].id_fornecedor
-                    })
+                        id_fornecedor: results[0].id_fornecedor})
                 }
             )
         })
     }
-
 
     async retificarEntrada(id, idEntrada, price, idFornecedor, qtd) {
 
@@ -211,11 +208,11 @@ class ProdutoDAO {
         return await new Promise((resolve, reject) => {
 
             this._connection.query(
-                'UPDATE estoque_entrada SET qtd_entrada = ? , SET preco_entrada = ?, SET id_fornecedor = ?, SET alterado_entrada = 1 WHERE id_entrada = ?',
+                'UPDATE estoque_entrada SET qtd_entrada = ? , preco_entrada = ?, id_fornecedor = ? WHERE id_entrada = ?',
                 [qtd, price, idFornecedor, idEntrada],
 
                 (error, results, fields) => {
-                    if (error) return reject(error.code)
+                    if (error) return reject(error)
                 }
             )
 
@@ -236,12 +233,76 @@ class ProdutoDAO {
                 [produto.quantidade, id],
 
                 (error, results, fields) => {
-                    if (error) return reject(error.code)
+                    if (error) return reject(error)
 
                     resolve(entrada)
                 }
             )
         })
+    }
+
+    async listarSaidaId(id) {
+
+        return await new Promise((resolve, reject) => {
+            this._connection.query(
+                'SELECT * FROM estoque_saida WHERE id_saida = ?',
+                [id],
+
+                (error, results, fields) => {
+                    if (error) return reject(error)
+
+                    resolve({
+                        id_saida: results[0].id_saida,
+                        produto_saida: results[0].produto_saida,
+                        qtd_saida: results[0].qtd_saida
+                    })
+                }
+            )
+        })
+
+    }
+
+    async retificarSaida(id, idSaida, qtd) {
+
+        const saida = await this.listarSaidaId(idSaida);
+
+        const produto = {};
+
+        return await new Promise((resolve, reject) => {
+
+            this._connection.query(
+                'UPDATE estoque_saida SET qtd_saida = ?, produto_saida = ? WHERE id_saida = ?',
+                [qtd, id, idSaida],
+
+                (error, results, fields) => {
+                    if (error) return reject(error)
+                }
+            )
+
+            produto.quantidade = saida.qtd_saida;
+
+            if (saida.qtd_saida < qtd) {
+                produto.quantidade = saida.qtd_saida + qtd;
+            }
+
+            if (saida.qtd_saida > qtd) {
+                produto.quantidade = saida.qtd_saida - qtd;
+            }
+
+            saida.qtd_saida = qtd;
+
+            this._connection.query(
+                'UPDATE estoque_produto SET qtd_produto = ? WHERE id_produto = ?',
+                [produto.quantidade, id],
+
+                (error, results, fields) => {
+                    if (error) return reject(error)
+
+                    resolve(saida)
+                }
+            )
+        })
+
     }
 
     async saida(id, qtd) {

@@ -103,6 +103,22 @@ router.put('/entrada/:id', async(req, res) => {
     }
 })
 
+
+router.put('/saida/:id', async(req, res) => {
+
+    try {
+
+        const qtdSaida = await new ProdutoDAO(connection).retificarSaida(req.body.id, req.params.id, req.body.qtd)
+
+        res.send(qtdSaida)
+        
+    } catch (e) {
+
+        res.send(e)
+        
+    }
+})
+
 router.post('/saida/:id', async (req, res) => {
 
     try {
