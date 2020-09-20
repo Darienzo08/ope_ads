@@ -24,6 +24,39 @@ router.get('/', async (req, res) => {
 
 });
 
+router.get('/entrada', async (req, res) => {
+
+    res.setHeader('Access-Control-Allow-Origin', '*');
+
+    try {
+
+        await new ProdutoDao(connection).listarEntrada().then(ArrayEntrada => res.send(ArrayEntrada))
+
+    } catch (e) {
+
+        res.send(e)
+
+    }
+
+});
+
+
+router.get('/saida', async (req, res) => {
+
+    res.setHeader('Access-Control-Allow-Origin', '*');
+
+    try {
+
+        await new ProdutoDao(connection).listarSaida().then(ArraySaida => res.send(ArraySaida))
+
+    } catch (e) {
+
+        res.send(e)
+
+    }
+
+});
+
 router.post('/', async (req, res) => {
 
     try {
@@ -88,34 +121,34 @@ router.post('/entrada/:id', async (req, res) => {
 
 })
 
-router.put('/entrada/:id', async(req, res) => {
+router.put('/entrada/:id', async (req, res) => {
     try {
 
         const qtdEntrada = await new ProdutoDAO(connection).retificarEntrada(req.body.id, req.params.id, req.body.preco, req.body.idFornecedor,
             req.body.qtd)
 
         res.send(qtdEntrada)
-        
+
     } catch (e) {
 
         res.send(e)
-        
+
     }
 })
 
 
-router.put('/saida/:id', async(req, res) => {
+router.put('/saida/:id', async (req, res) => {
 
     try {
 
         const qtdSaida = await new ProdutoDAO(connection).retificarSaida(req.body.id, req.params.id, req.body.qtd)
 
         res.send(qtdSaida)
-        
+
     } catch (e) {
 
         res.send(e)
-        
+
     }
 })
 

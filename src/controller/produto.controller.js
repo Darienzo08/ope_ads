@@ -38,6 +38,70 @@ class ProdutoDAO {
 
     }
 
+
+    async listarEntrada() {
+
+        const arrayEntrada = [];
+
+        return new Promise((resolve, reject) => {
+
+            this._connection.query(
+
+                'SELECT id_entrada, produto_entrada, data_entrada, qtd_entrada, preco_entrada, id_fornecedor FROM estoque_entrada', (error, results, fields) => {
+
+                    if (error) return reject(error);
+
+                    results.forEach((raw_entrada) => {
+
+                        arrayEntrada.push({
+                            idEntrada: raw_entrada.id_entrada,
+                            produtoEntrada: raw_entrada.produto_entrada,
+                            dataEntrada: raw_entrada.data_entrada,
+                            quantidadeEntrada: raw_entrada.qtd_entrada,
+                            precoEntrada: raw_entrada.preco_entrada,
+                            idFornecedor: raw_entrada.id_fornecedor
+                        });
+                    });
+
+                    resolve(arrayEntrada);
+                }
+            )
+
+        })
+
+    }
+
+
+    async listarSaida() {
+
+        const arraySaida = [];
+
+        return new Promise((resolve, reject) => {
+
+            this._connection.query(
+
+                'SELECT id_saida, produto_saida, data_saida, qtd_saida FROM estoque_saida', (error, results, fields) => {
+
+                    if (error) return reject(error);
+
+                    results.forEach((raw_saida) => {
+
+                        arraySaida.push({
+                            idSaida: raw_saida.id_saida,
+                            produtoSaida: raw_saida.produto_saida,
+                            dataSaida: raw_saida.data_saida,
+                            quantidadeSaida: raw_saida.qtd_saida
+                        });
+                    });
+
+                    resolve(arraySaida);
+                }
+            )
+
+        })
+
+    }
+
     async listar_id(id) {
 
         return new Promise((resolve, reject) => {
@@ -189,11 +253,13 @@ class ProdutoDAO {
                 (error, results, fields) => {
                     if (error) return reject(error)
 
-                    resolve({id_entrada: results[0].id_entrada,
+                    resolve({
+                        id_entrada: results[0].id_entrada,
                         produto_entrada: results[0].produto_entrada,
                         qtd_entrada: results[0].qtd_entrada,
                         preco_entrada: results[0].preco_entrada,
-                        id_fornecedor: results[0].id_fornecedor})
+                        id_fornecedor: results[0].id_fornecedor
+                    })
                 }
             )
         })

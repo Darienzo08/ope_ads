@@ -9,12 +9,20 @@ class Produto {
         this.quantidade = param.quantidade;
         this.status = param.status
 
-        if (this.nome == undefined || this.nome.length === 0){
-            throw{code: 1, name: "Campos faltantes", message: "O campo nome não foi enviado"}
+        if (this.nome == undefined || this.nome.length === 0) {
+            throw {
+                code: 1,
+                name: "Campos faltantes",
+                message: "O campo nome não foi enviado"
+            }
         }
 
-        if (this.preco == undefined || this.preco.length === 0){
-            throw{code: 1, name: "Campos faltantes", message: "O campo preco não foi enviado"}
+        if (this.preco == undefined || this.preco.length === 0) {
+            throw {
+                code: 1,
+                name: "Campos faltantes",
+                message: "O campo preco não foi enviado"
+            }
         }
     }
 }
