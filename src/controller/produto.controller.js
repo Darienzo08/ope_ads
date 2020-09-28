@@ -226,7 +226,7 @@ class ProdutoDAO {
                 [produto.id, qtd, price, idFornecedor],
 
                 (error, results, fields) => {
-                    if (error) return reject(error.code)
+                    if (error) return reject(error)
                 }
             )
 
@@ -235,7 +235,7 @@ class ProdutoDAO {
                 [produto.quantidade, id],
 
                 (error, results, fields) => {
-                    if (error) return reject(error.code)
+                    if (error) return reject(error)
 
                     resolve(produto)
                 }

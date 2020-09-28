@@ -3,19 +3,14 @@ const btnCadastrar = $('#btn-cadastrar');
 const btnCadastrarNovoProduto = $('#cadastrar-produto');
 const btnAlterarProduto = $('#alterar-produto');
 const btnInativarProduto = $('#inativar-produto');
-const btnEntradaSaida = $('#btn-entrada-saida');
-const btnEntrada = $('#btn-entrada');
-const btnSaida = $('#btn-saida');
-const btnconfirmarEntrada = $('#btn-confirmar-entrada')
-const btnconfirmarSaida = $('#btn-confirmar-saida')
+const btnEntrada = $('#btnEntrada')
 
 const txtProduto = $('#txt-produto');
 const nomeNovoProduto = $('#nome-novo-produto');
 const descNovoProduto = $('#desc-novo-produto');
 const precoNovoProduto = $('#preco-novo-produto');
 const quantidadeProdutos = $('#qtd-produtos');
-
-const selectProdutos = $('#select-produtos');
+const txtEntrada = $('#txtEntrada');
 
 const modalProduto = $('#modal-produto');
 const modalProdutoTitle = $('#modal-produto-title');
@@ -23,15 +18,10 @@ const modalProdutoTitle = $('#modal-produto-title');
 const modalInativarProduto = $('#modal-inativar-produto');
 const modalInativarProdutoTitle = $('#modal-inativar-produto-title');
 
-const modalOpcao = $('#modal-opcao');
-
-const modalEntradaSaida = $('#modal-entrada-saida');
-const modalEntradaSidaTitle = $('#modal-entrada-saida-title')
+const modalEntrada = $('#modal-entrada');
 
 const produto = {};
 const novoProduto = {};
-
-$('#modal-produtos').load('modal-produtos.html')
 
 $(document).ready(function () {
 
@@ -59,7 +49,10 @@ $(document).ready(function () {
         columnDefs: [{
             className: 'text-center',
             targets: [2, 4, 5]
-        }],
+        },
+        { targets: [1], visible: false }
+    ],
+
         // adiciona o SlimScroll
         fnDrawCallback: function (oSettings) {
 
@@ -167,64 +160,25 @@ $(document).ready(function () {
 
     })
 
-    // Invoca o modal de entrada e saída
-    btnEntradaSaida.click(function () {
+    // Realiza entrada de produto
 
-        modalOpcao.modal('show');
+    dtProducts.off('click.ion-arrow-up-a').on('click.ion-arrow-up-a', 'tr td a i.ion-arrow-up-a', function () {
 
+        const row = $(this).closest("tr")
+        const dadosProduto = dtProducts.row(row).data()
+
+        produto.id = dadosProduto[6]
+        produto.nome = dadosProduto[0]
+        produto.status = dadosProduto[8]
+        produto.quantidade = dadosProduto[2]
+
+        modalEntrada.modal('show');
+    
     })
 
-    btnEntrada.click(function () {
-
-        btnconfirmarEntrada.removeClass('d-none')
-        btnconfirmarSaida.addClass('d-none')
-
-        montarSelectProdutos();
-
-        modalEntradaSidaTitle.text('Entrada de Produtos')
-
-        modalEntradaSaida.modal('show');
-
-    })
-
-    btnSaida.click(function () {
-
-        btnconfirmarEntrada.addClass('d-none')
-        btnconfirmarSaida.removeClass('d-none')
-
-        montarSelectProdutos();
-
-        modalEntradaSidaTitle.text('Saída de Produtos');
-
-        modalEntradaSaida.modal('show');
-
-    })
-
-    btnconfirmarEntrada.click(function () {
-
-        const produto = {};
-
-        const optionProdutos = $('#select-produtos option:selected')
-
-        produto.id = parseInt(optionProdutos[0].attributes.id.value);
-
-        produto.quantidade = parseInt(quantidadeProdutos.val())
+    btnEntrada.click(function() {
 
         entradaProdutos(produto)
-
-    })
-
-    btnconfirmarSaida.click(function() {
-
-        const produto = {};
-
-        const optionProdutos = $('#select-produtos option:selected')
-
-        produto.id = parseInt(optionProdutos[0].attributes.id.value);
-
-        produto.quantidade = parseInt(quantidadeProdutos.val())
-
-        saidaProdutos(produto);
 
     })
 
@@ -260,7 +214,9 @@ function listarProdutos() {
                 status,
                 // Coluna 05
                 '<a href="javascript:void(0)"><i class="fa fa-pencil color-muted mr-2"></i></a>' +
-                '<a href="javascript:void(0)"><i class="fa fa-close color-danger"></i></a>',
+                '<a href="javascript:void(0)"><i class="fa fa-close color-danger mr-2"></i></a>' +
+                '<a href="javascript:void(0)"><i class="ion ion-arrow-up-a mr-2"></i></a>' + 
+                '<a href="javascript:void(0)"><i class="ion ion-arrow-down-a"></i></a>',
                 // Hidden 06
                 produto.id,
                 // Hidden 07
@@ -403,7 +359,7 @@ function montarSelectProdutos() {
 
 function entradaProdutos(produto) {
 
-    btnconfirmarEntrada.prop('disabled', true);
+    btnEntrada.prop('disabled', true);
 
     $.ajax({
         url: '/produtos/entrada/' + produto.id, // URL do recurso requisitado
@@ -422,11 +378,9 @@ function entradaProdutos(produto) {
 
     }).always(function () {
 
-        montarSelectProdutos();
+        txtEntrada.val("");
 
-        quantidadeProdutos.val("");
-
-        btnconfirmarEntrada.prop('disabled', false);
+        btnEntrada.prop('disabled', false);
 
     })
 
