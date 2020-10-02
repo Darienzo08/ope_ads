@@ -348,12 +348,12 @@ class ProdutoDAO {
 
             produto.quantidade = saida.qtd_saida;
 
-            if (saida.qtd_saida < qtd) {
-                produto.quantidade = saida.qtd_saida + qtd;
-            }
-
             if (saida.qtd_saida > qtd) {
                 produto.quantidade = saida.qtd_saida - qtd;
+            }
+
+            if (saida.qtd_saida < qtd) {
+                produto.quantidade = saida.qtd_saida + qtd;
             }
 
             saida.qtd_saida = qtd;

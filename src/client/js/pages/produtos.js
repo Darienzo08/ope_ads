@@ -3,9 +3,13 @@ const btnCadastrar = $('#btn-cadastrar');
 const btnCadastrarNovoProduto = $('#cadastrar-produto');
 const btnAlterarProduto = $('#alterar-produto');
 const btnInativarProduto = $('#inativar-produto');
-const btnEntrada = $('#btnEntrada')
+const btnEntrada = $('#btnEntrada');
+const btnSaida = $('#btnSaida');
 
 const txtProduto = $('#txt-produto');
+const txtPreco = $('#txtPreco');
+const txtFornecedor = $('#txtFornecedor')
+const txtQtdSaida = $('#txtQtdSaida')
 const nomeNovoProduto = $('#nome-novo-produto');
 const descNovoProduto = $('#desc-novo-produto');
 const precoNovoProduto = $('#preco-novo-produto');
@@ -19,6 +23,7 @@ const modalInativarProduto = $('#modal-inativar-produto');
 const modalInativarProdutoTitle = $('#modal-inativar-produto-title');
 
 const modalEntrada = $('#modal-entrada');
+const modalSaida = $('#modal-saida');
 
 const produto = {};
 const novoProduto = {};
@@ -178,7 +183,33 @@ $(document).ready(function () {
 
     btnEntrada.click(function() {
 
+        produto.idFornecedor = txtFornecedor.val()
+        produto.preco = txtPreco.val()
+
         entradaProdutos(produto)
+
+    })
+
+
+    // Realiza saida de produto
+
+    dtProducts.off('click.ion-arrow-down-a').on('click.ion-arrow-down-a', 'tr td a i.ion-arrow-down-a', function () {
+
+        const row = $(this).closest("tr")
+        const dadosProduto = dtProducts.row(row).data()
+
+        produto.id = dadosProduto[6]
+        produto.quantidade = dadosProduto[2]
+
+        modalSaida.modal('show');
+    
+    })
+
+    btnSaida.click(function() {
+
+        produto.quantidade = txtQtdSaida.val()
+
+       saidaProdutos(produto)
 
     })
 
@@ -388,7 +419,7 @@ function entradaProdutos(produto) {
 
 function saidaProdutos(produto) {
 
-    btnconfirmarSaida.prop('disabled', true);
+    btnSaida.prop('disabled', true);
 
     $.ajax({
         url: '/produtos/saida/' + produto.id, // URL do recurso requisitado
@@ -411,7 +442,7 @@ function saidaProdutos(produto) {
 
         quantidadeProdutos.val("");
 
-        btnconfirmarSaida.prop('disabled', false);
+        btnSaida.prop('disabled', false);
 
     })
 
