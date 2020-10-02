@@ -43,8 +43,6 @@ router.get('/entrada', async (req, res) => {
 
 router.get('/saida', async (req, res) => {
 
-    res.setHeader('Access-Control-Allow-Origin', '*');
-
     try {
 
         await new ProdutoDao(connection).listarSaida().then(ArraySaida => res.send(ArraySaida))

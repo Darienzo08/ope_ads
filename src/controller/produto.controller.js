@@ -320,7 +320,8 @@ class ProdutoDAO {
                     resolve({
                         id_saida: results[0].id_saida,
                         produto_saida: results[0].produto_saida,
-                        qtd_saida: results[0].qtd_saida
+                        qtd_saida: results[0].qtd_saida,
+                        data_saida: results[0].data_entrada
                     })
                 }
             )
