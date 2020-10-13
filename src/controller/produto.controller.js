@@ -1,10 +1,14 @@
+const bcrypt = require ('bcrypt')
+const jwt = require('jsonwebtoken');
+const path = require('path')
+require('dotenv').config({path: path.resolve(__dirname, '../.env')});
+
 class ProdutoDAO {
 
     constructor(connection) {
 
         this._connection = connection
     }
-
 
     async listar() {
 
@@ -14,7 +18,7 @@ class ProdutoDAO {
 
             this._connection.query(
 
-                'SELECT id_produto, nome_produto, preco_produto, descricao_produto, status_produto, qtd_produto FROM estoque_produto', (error, results, fields) => {
+                'SELECT id_produto, nome_produto, preco_produto, descricao_produto, status_produto, qtd_produto, limiar_produto FROM estoque_produto', (error, results, fields) => {
 
                     if (error) return reject(error);
 
@@ -26,7 +30,8 @@ class ProdutoDAO {
                             preco: raw_product.preco_produto,
                             descricao: raw_product.descricao_produto,
                             status: raw_product.status_produto,
-                            quantidade: raw_product.qtd_produto
+                            quantidade: raw_product.qtd_produto,
+                            limiar: raw_product.limiar_produto
                         });
                     });
 
@@ -37,7 +42,6 @@ class ProdutoDAO {
         })
 
     }
-
 
     async listarEntrada() {
 
@@ -142,8 +146,8 @@ class ProdutoDAO {
         return new Promise((resolve, reject) => {
 
             this._connection.query(
-                'INSERT INTO estoque_produto(nome_produto, preco_produto, descricao_produto) VALUES (?, ?, ?)',
-                [produto.nome, produto.preco, produto.descricao],
+                'INSERT INTO estoque_produto(nome_produto, preco_produto, descricao_produto, limiar_produto) VALUES (?, ?, ?, ?)',
+                [produto.nome, produto.preco, produto.descricao, produto.limiar],
 
                 (error, results, fields) => {
                     if (error) return reject(error)
@@ -151,7 +155,8 @@ class ProdutoDAO {
                         id: results.insertId,
                         nome: produto.nome,
                         preco: produto.preco,
-                        descricao: produto.descricao
+                        descricao: produto.descricao,
+                        limiar: produto.limiar
                     })
                 }
             )
@@ -171,9 +176,11 @@ class ProdutoDAO {
 
             if (alteracao.descricao != null) produto.descricao = alteracao.descricao
 
+            if (alteracao.limiar != null) produto.limiar = alteracao.limiar
+
             this._connection.query(
-                'UPDATE estoque_produto SET nome_produto=?, preco_produto=?, descricao_produto=? WHERE id_produto=?',
-                [produto.nome, produto.preco, produto.descricao, id],
+                'UPDATE estoque_produto SET nome_produto=?, preco_produto=?, descricao_produto=?, limiar_produto=? WHERE id_produto=?',
+                [produto.nome, produto.preco, produto.descricao, produto.limiar, id],
 
                 (error, results, fields) => {
                     if (error) return reject(error)
@@ -182,6 +189,7 @@ class ProdutoDAO {
                         nome: produto.nome,
                         preco: produto.preco,
                         descricao: produto.descricao,
+                        limiar: produto.limiar,
                         status: produto.status
                     })
                 }
@@ -401,6 +409,89 @@ class ProdutoDAO {
                 }
             )
         });
+
+    }
+
+    async gerarSenha (senha) {
+
+        return new Promise((resolve, reject) => {
+
+            const salt = bcrypt.genSaltSync(10)
+
+            const hash = bcrypt.hashSync(senha, salt)
+
+            resolve({senha: hash})
+
+        })
+
+    }
+
+    async realizarLogin (user, senha) {
+
+        return new Promise((resolve, reject) => {
+
+            this._connection.query(
+
+                'SELECT * FROM estoque_login WHERE user_login = ?', [user], (error, results, fields) => {
+
+                    if (error) return reject(error);
+
+                    if (results.length < 1) { return reject({code: 1, name: "Não encontrado", message: "Nenhum usuário encontrado"}) }
+
+                    const verified = bcrypt.compareSync(senha, results[0].senha_login);
+
+                    if (verified == false) {return reject({code: 1, name: "Não encontrado", message: "Nenhum usuário encontrado"})} 
+
+                    const id = results[0].id_login
+
+                    const token = jwt.sign({ id }, process.env.SECRET, {expiresIn: 300});
+
+                    this.gerarSessao(id, token);
+
+                    resolve({ auth: true, token: token });
+                        
+                }
+
+            )
+
+        })
+
+    }
+
+    async gerarSessao (user, token) {
+
+        this._connection.query(
+
+            'INSERT INTO estoque_sessao (token_sessao, user_sessao) VALUES (?, ?)' +
+            'ON DUPLICATE KEY UPDATE token_sessao = ?, user_sessao = ?', [token, user], (error, results, fields) => {
+
+                if (error) return error;
+                    
+            }
+
+        )
+
+    }
+
+    async validarSessao (token) {
+
+        return new Promise((resolve, reject) => {
+
+            this._connection.query(
+
+                'SELECT * FROM estoque.estoque_sessao WHERE token_sessao = ?', [token], (error, results, fields) => {
+
+                    if (error) return reject(error);
+
+                    if (results.length < 1) { return reject({auth: false, name: "Não encontrado", message: "Sessão não encontrada"}) }
+                    
+                    resolve({auth: true})
+
+                }
+
+            )
+
+        })
 
     }
 

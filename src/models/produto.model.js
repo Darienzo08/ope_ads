@@ -7,7 +7,8 @@ class Produto {
         this.preco = param.preco;
         this.descricao = param.descricao;
         this.quantidade = param.quantidade;
-        this.status = param.status
+        this.status = param.status;
+        this.limiar = param.limiar;
 
         if (this.nome == undefined || this.nome.length === 0) {
             throw {
