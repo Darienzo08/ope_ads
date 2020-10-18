@@ -463,7 +463,7 @@ class ProdutoDAO {
         this._connection.query(
 
             'INSERT INTO estoque_sessao (token_sessao, user_sessao) VALUES (?, ?)' +
-            'ON DUPLICATE KEY UPDATE token_sessao = ?, user_sessao = ?', [token, user], (error, results, fields) => {
+            'ON DUPLICATE KEY UPDATE token_sessao = VALUES(token_sessao), user_sessao = VALUES(user_sessao)', [token, user], (error, results, fields) => {
 
                 if (error) return error;
                     
