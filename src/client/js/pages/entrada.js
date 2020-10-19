@@ -73,7 +73,7 @@ function listarSaida() {
 
             dtEntrada.row.add([
                 // Coluna 00
-                produto.produtoSaida,
+                produto.nomeProduto,
                 // Coluna 01
                 produto.quantidadeSaida,
                 // Coluna 02
@@ -112,11 +112,11 @@ function listarEntrada() {
 
             dtEntrada.row.add([
                 // Coluna 00
-                produto.produtoEntrada,
+                produto.nomeProduto,
                 // Coluna 01
                 produto.quantidadeEntrada,
                 // Coluna 02
-                produto.idFornecedor,
+                produto.nomeFornecedor,
                 // Coluna 03
                 'R$ ' + produto.precoEntrada,
                 // Coluna 04

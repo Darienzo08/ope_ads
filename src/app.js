@@ -21,7 +21,11 @@ app.use(bodyParser.json()); // Apenas no formato json
 
 const rotaProdutos = require('./routes/produto.route');
 
-app.use('/produtos', rotaProdutos)
+app.use('/produtos', rotaProdutos);
+
+const rotaFornecedores = require('./routes/fornecedor.route');
+
+app.use('/fornecedores', rotaFornecedores);
 
 app.get('/', async(req, res, next) => {
 

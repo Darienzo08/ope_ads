@@ -51,7 +51,9 @@ class ProdutoDAO {
 
             this._connection.query(
 
-                'SELECT id_entrada, produto_entrada, data_entrada, qtd_entrada, preco_entrada, id_fornecedor FROM estoque_entrada', (error, results, fields) => {
+                'SELECT id_entrada, prod.nome_produto, DATE_FORMAT(data_entrada, "%d/%m/%Y") AS data_entrada, qtd_entrada, preco_entrada, forn.nome_fornecedor FROM estoque_entrada AS ent ' +  
+                'INNER JOIN estoque_produto AS prod ON prod.id_produto = ent.produto_entrada ' +
+                'INNER JOIN estoque_fornecedores AS forn ON forn.cnpj_fornecedor = ent.id_fornecedor', (error, results, fields) => {
 
                     if (error) return reject(error);
 
@@ -59,11 +61,11 @@ class ProdutoDAO {
 
                         arrayEntrada.push({
                             idEntrada: raw_entrada.id_entrada,
-                            produtoEntrada: raw_entrada.produto_entrada,
+                            nomeProduto: raw_entrada.nome_produto,
                             dataEntrada: raw_entrada.data_entrada,
                             quantidadeEntrada: raw_entrada.qtd_entrada,
                             precoEntrada: raw_entrada.preco_entrada,
-                            idFornecedor: raw_entrada.id_fornecedor
+                            nomeFornecedor: raw_entrada.nome_fornecedor
                         });
                     });
 
@@ -84,7 +86,8 @@ class ProdutoDAO {
 
             this._connection.query(
 
-                'SELECT id_saida, produto_saida, data_saida, qtd_saida FROM estoque_saida', (error, results, fields) => {
+                'SELECT id_saida, prod.nome_produto, DATE_FORMAT(data_saida, "%d/%m/%Y") AS data_saida, qtd_saida FROM estoque_saida AS sai ' +
+                'INNER JOIN estoque_produto AS prod ON prod.id_produto = sai.produto_saida', (error, results, fields) => {
 
                     if (error) return reject(error);
 
@@ -92,6 +95,7 @@ class ProdutoDAO {
 
                         arraySaida.push({
                             idSaida: raw_saida.id_saida,
+                            nomeProduto: raw_saida.nome_produto,
                             produtoSaida: raw_saida.produto_saida,
                             dataSaida: raw_saida.data_saida,
                             quantidadeSaida: raw_saida.qtd_saida
