@@ -1,14 +1,15 @@
 const txtFornecedor = $("#txt-fornecedor");
 const btnCadastrarNovoFornecedor = $('#cadastrar-fornecedor');
-const btnAlterarFornecedor = $('#alterar-fornecedor')
-const cnpjNovoFornecedor =  $('#cnpj-novo-fornecedor')
-const nomeFornecedorNovoFornecedor =  $('#nome-novo-fornecedor')
-const enderecoFornecedorNovoFornecedor =  $('#endereco-novo-fornecedor')
+const btnAlterarFornecedor = $('#alterar-fornecedor');
+const btnEntradaFornecedor = $('#btnEntradaFornecedor');
+const cnpjNovoFornecedor =  $('#cnpjNovoFornecedor');
+const nomeFornecedorNovoFornecedor =  $('#nomeFornecedorNovoFornecedor');
+const enderecoFornecedorNovoFornecedor =  $('#enderecoFornecedorNovoFornecedor');
 const modalFornecedorTitle = $('#modal-fornecedor-title');
 const modalFornecedor = $('#modal-fornecedor');
+const modalEntradaFornecedor = $('#modal-entrada-fornecedor');
 const fornecedor = {};
 const novoFornecedor = {};
-const btnCadastrarNovoFornecedor = $('#cadastrar-fornecedor');
 const txtCnpjForncedor = $('#txtCnpjForncedor');
 const txtNomeFornecedor = $('#txtNomeFornecedor');
 const txtEnderecoFornecedor = $('#txtEnderecoFornecedor');
@@ -16,7 +17,6 @@ const txtEnderecoFornecedor = $('#txtEnderecoFornecedor');
 
 const btnBuscar = $("#btn-buscar");
 
-// ISSO AQUI
 const btnCadastrar = $('#btn-cadastrar');
 
 $(document).ready(function () {
@@ -71,10 +71,6 @@ $(document).ready(function () {
     })
 
     btnCadastrar.click(function () {
-        modalFornecedorTitle.text('Cadastrar fornecedor')
-
-        btnAlterarFornecedor.addClass('d-none');
-        btnCadastrarNovoFornecedor.removeClass('d-none');
 
         cnpjNovoFornecedor.val("");
         nomeFornecedorNovoFornecedor.val("");
@@ -87,45 +83,12 @@ $(document).ready(function () {
 
         novoFornecedor.cnpj = cnpjNovoFornecedor.val();
         novoFornecedor.nomeFornecedor = nomeFornecedorNovoFornecedor.val();
+
+        console.log(novoFornecedor.nomeFornecedor)
+
         novoFornecedor.enderecoFornecedor = enderecoFornecedorNovoFornecedor.val();
 
         cadastrarFornecedores(novoFornecedor);
-
-    })
-
-    dtFornecedores.off('click').on('click', 'tr td a i.fa-pencil', function () {
-
-        btnCadastrarNovoFornecedor.addClass('d-none');
-
-        const row = $(this).closest("tr")
-        const dadosFornecedor = dtFornecedores.row(row).data()
-
-        fornecedor.cnpj = dadosFornecedor[0]
-        fornecedor.nomeFornecedor = dadosFornecedor[1]
-        fornecedor.enderecoFornecedor = dadosFornecedor[2]
-
-
-        btnAlterarFornecedor.removeClass('d-none')
-        modalFornecedorTitle.text('Alterar fornecedor: ' + fornecedor.nomeFornecedor)
-        modalFornecedor.modal('show')
-
-        cnpjNovoFornecedor.val(fornecedor.cnpj);
-        nomeFornecedorNovoFornecedor.val(fornecedor.nomeFornecedor);
-        enderecoFornecedorNovoFornecedor.val(fornecedor.enderecoFornecedor);
-
-    })
-
-    btnAlterarFornecedor.click(function () {
-
-        produto.nome = nomeNovoProduto.val();
-        produto.descricao = descNovoProduto.val();
-        produto.preco = precoNovoProduto.val();
-
-        fornecedor.cnpj = cnpjNovoFornecedor.val();
-        fornecedor.nomeFornecedor = nomeFornecedorNovoFornecedor.val();
-        fornecedor.enderecoFornecedor = enderecoFornecedorNovoFornecedor.val();
-
-        alterarFornecedor(fornecedor);
 
     })
 
@@ -179,6 +142,8 @@ function cadastrarFornecedores(novoFornecedor) {
     }).done(function (resposta) {
 
         listarFornecedores();
+
+        console.log(novoFornecedor.nomeFornecedor)
 
         dtFornecedores.search(novoFornecedor.nomeFornecedor).draw();
 
