@@ -5,6 +5,8 @@ const btnAlterarProduto = $('#alterar-produto');
 const btnInativarProduto = $('#inativar-produto');
 const btnEntrada = $('#btnEntrada');
 const btnSaida = $('#btnSaida');
+const btnFiltrar = $('#btn-filtrar');
+const btnFiltro = $('#btn-filtro')
 
 const txtProduto = $('#txt-produto');
 const txtPreco = $('#txtPreco');
@@ -24,6 +26,8 @@ const modalInativarProdutoTitle = $('#modal-inativar-produto-title');
 
 const modalEntrada = $('#modal-entrada');
 const modalSaida = $('#modal-saida');
+
+const modalFiltrar = $('#modal-filtro');
 
 const produto = {};
 const novoProduto = {};
@@ -71,6 +75,93 @@ $(document).ready(function () {
 
         }
     })
+
+
+    const qtdSlide = document.getElementById('qtd-slider');
+    const qtd = {};
+    qtd.min = 0;
+    qtd.max = 950;
+
+    noUiSlider.create(qtdSlide, {
+        start: [50, 950],
+        connect: true,
+        tooltips: true,
+        format: wNumb({
+            decimals: 0
+        }),
+        range: {
+            'min': 0,
+            'max': 1000
+        }
+    });
+
+    qtdSlide.noUiSlider.on('change', function (values, handle) {
+
+        if (handle == 0) { qtd.min = parseInt(values[handle]); }
+
+        if (handle == 1) { qtd.max = parseInt(values[handle]); }
+
+        dtProducts.draw();
+
+    });
+
+    const precoSlider = document.getElementById('preco-slider');
+    const preco = {};
+    preco.min = 0;
+    preco.max = 450;
+
+    noUiSlider.create(precoSlider, {
+        start: [50, 450],
+        connect: true,
+        tooltips: true,
+        format: wNumb({
+            thousand: '.',
+            prefix: 'R$ '
+        }),
+        range: {
+            'min': 0,
+            'max': 500
+        }
+    });
+
+    precoSlider.noUiSlider.on('change', function (values, handle) {
+
+        if (handle == 0) { preco.min = parseInt(values[handle].replace('R$ ', '')); }
+
+        if (handle == 1) { preco.max = parseInt(values[handle].replace('R$ ', '')); }
+
+        dtProducts.draw();
+
+    });
+
+    $.fn.dataTable.ext.search.push(
+        function( settings, data, dataIndex ) {
+          var min = qtd.min;
+          var max = qtd.max;
+          var col = parseFloat( data[2] ) || 0; // data[number] = column number
+          if ( ( isNaN( min ) && isNaN( max ) ) ||
+               ( isNaN( min ) && col <= max ) ||
+               ( min <= col   && isNaN( max ) ) ||
+               ( min <= col   && col <= max ) )
+          {
+            return true;
+          }
+          return false;
+        },
+         function( settings, data, dataIndex ) {
+          var min = preco.min;
+          var max = preco.max;
+          var col = parseFloat( data[3].replace('R$ ', '') ) || 0; // data[number] = column number
+          if ( ( isNaN( min ) && isNaN( max ) ) ||
+               ( isNaN( min ) && col <= max ) ||
+               ( min <= col   && isNaN( max ) ) ||
+               ( min <= col   && col <= max ) )
+          {
+            return true;
+          }
+          return false;
+        }
+      );
 
     // Lista os produtos
     listarProdutos();
@@ -210,6 +301,12 @@ $(document).ready(function () {
         produto.quantidade = txtQtdSaida.val()
 
        saidaProdutos(produto)
+
+    })
+
+    btnFiltrar.click(function() {
+
+        modalFiltrar.modal('show');
 
     })
 

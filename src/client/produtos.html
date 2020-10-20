@@ -14,6 +14,7 @@
     <link href="plugins/tables/css/datatable/dataTables.bootstrap4.min.css" rel="stylesheet">
     <link href="plugins/tables/css/extensions/rowReorder.dataTables.min.css" rel="stylesheet">
     <link href="plugins/tables/css/extensions/responsive.dataTables.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./plugins/nouislider/nouislider.min.css">
 
 </head>
 
@@ -163,6 +164,36 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
                         <button type="button" class="btn btn-danger" id="inativar-produto">Confirmar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modal-filtro">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Filtro de produtos</h5>
+                        <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+
+                        <h5> Quantidade de produtos: </h5>
+
+                        <div id="qtd-slider" class="my-5 px-4"></div>
+
+                        <h5> Valor dos produtos: </h5>
+
+                        <div id="preco-slider" class="my-5 px-4"></div>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal"
+                            id="btn-filtro">Confirmar</button>
                     </div>
                 </div>
             </div>
@@ -319,7 +350,7 @@
 
                                     <div class="col-12 col-lg-2">
 
-                                        <button class="btn mt-2 btn-primary w-100" disabled> Filtrar </button>
+                                        <button class="btn mt-2 btn-primary w-100" id="btn-filtrar"> Filtrar </button>
 
                                     </div>
 
@@ -393,6 +424,8 @@
     <script src="./plugins/tables/js/datatable-init/datatable-basic.min.js"></script>
     <script src="./plugins/tables/js/datatable/dataTables.rowReorder.min.js"></script>
     <script src="./plugins/tables/js/datatable/dataTables.responsive.min.js"></script>
+    <script src="./plugins/nouislider/nouislider.min.js"></script>
+    <script src="./plugins/wnumb/wNumb.js"></script>
 
     <script src="js/pages/produtos.js"></script>
     <script src="js/pages/functions.js"></script>
