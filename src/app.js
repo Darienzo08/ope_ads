@@ -27,6 +27,14 @@ const rotaFornecedores = require('./routes/fornecedor.route');
 
 app.use('/fornecedores', rotaFornecedores);
 
+const rotaComandas = require('./routes/comanda.route');
+
+app.use('/comandas', rotaComandas);
+
+const rotaPratos = require('./routes/pratos.route');
+
+app.use('/pratos', rotaPratos)
+
 app.get('/', async(req, res, next) => {
 
     res.sendFile(path.join(__dirname, '../src/client', 'index.html'))

@@ -2,8 +2,8 @@ const express = require('express');
 
 const router = express.Router();
 
-const Comanda = require('../models/comanda.model');
-const ComandaDAO = require('../controller/comanda.controller');
+const Pratos = require('../models/estoqueItens.model');
+const PratosDAO = require('../controller/pratos.controller');
 
 const connection = require('../config/connection');
 
@@ -13,7 +13,7 @@ router.get('/', async(req, res) => {
 
     try {
 
-        await new ComandaDAO(connection).listarComanda().then(ArrayComanda => res.send(ArrayComanda));
+        await new PratosDAO(connection).listarPratos().then(ArrayPratos => res.send(ArrayPratos));
         
     } catch (e) {
 
@@ -27,9 +27,9 @@ router.post('/', async(req, res) => {
 
     try {
 
-        const novaComanda = new Comanda(req.body)
+        const novoPrato = new Pratos(req.body)
 
-        await new ComandaDAO(connection).cadastrarComanda(novaComanda).then(novaComanda => res.send(novaComanda));
+        await new PratosDAO(connection).cadastrarPratos(novoPrato).then(novoPrato => res.send(novoPrato));
         
     } catch (e) {
 
@@ -43,9 +43,9 @@ router.put('/:id', async(req, res) => {
 
     try {
 
-        const comanda = new Comanda(await new ComandaDAO(connection).alterarComanda(req.params.id, req.body));
+        const prato = new Pratos(await new PratosDAO(connection).alterarPratos(req.params.id, req.body));
         
-        res.send(comanda)
+        res.send(prato)
 
     } catch (e) {
 
@@ -59,9 +59,9 @@ router.delete('/:id', async (req, res) => {
 
     try {
 
-        const comanda = new Comanda(await new ComandaDAO(connection).finalizarComanda(req.params.id))
+        const prato = new Pratos(await new PratosDAO(connection).inativarPratos(req.params.id))
 
-        res.send(comanda)
+        res.send(prato)
 
     } catch (e) {
 
