@@ -6,7 +6,6 @@ const btnInativarProduto = $('#inativar-produto');
 const btnEntrada = $('#btnEntrada');
 const btnSaida = $('#btnSaida');
 const btnFiltrar = $('#btn-filtrar');
-const btnFiltro = $('#btn-filtro')
 
 const txtProduto = $('#txt-produto');
 const txtPreco = $('#txtPreco');
