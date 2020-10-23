@@ -55,7 +55,7 @@ router.put('/:id', async(req, res) => {
 
 });
 
-router.delete('/:id', async (req, res) => {
+router.put('/inativar/:id', async (req, res) => {
 
     try {
 

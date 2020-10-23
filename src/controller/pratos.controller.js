@@ -76,8 +76,8 @@ class PratosDAO {
         return new Promise((resolve, reject) => {
 
             this._connection.query(
-                'INSERT INTO estoque_itens(id_item, nome_item, valor_item, produto_item, status_item) VALUES (?, ?, ?, ?, ?)',
-                [prato.idItem, prato.nomeItem, prato.valorItem, prato.produtoItem, prato.statusItem],
+                'INSERT INTO estoque_itens(nome_item, valor_item, produto_item, status_item) VALUES (?, ?, ?, ?)',
+                [prato.nomeItem, prato.valorItem, prato.produtoItem, prato.statusItem],
 
                 (error, results, fields) => {
                     if (error) return reject(error)
