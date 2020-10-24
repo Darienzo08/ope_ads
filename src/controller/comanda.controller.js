@@ -18,7 +18,7 @@ class ComandaDAO {
 
                 // 'INNER JOIN estoque_itens_comanda AS eic ON estCom.id_comanda = eic.id_itens_comanda'
 
-                'SELECT id_comanda, num_mesa, valor_comanda, status_comanda, eic.id_itens_comanda, eic.id_itens FROM estoque_comanda AS estCom', (error, results, fields) => {
+                'SELECT id_comanda, num_mesa, valor_comanda, status_comanda FROM estoque_comanda', (error, results, fields) => {
 
                     if (error) return reject(error);
 
