@@ -27,10 +27,7 @@ router.get('/itens/:id', async(req, res) => {
 
     try {
 
-
-        const Itenscomanda = new Comanda(await new ComandaDAO(connection).listarItensComanda(req.params.id))
-
-        res.send(Itenscomanda)
+        await new ComandaDAO(connection).listarItensComanda(req.params.id).then(i => res.send(i));
 
     } catch (e) {
 
