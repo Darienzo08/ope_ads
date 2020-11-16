@@ -23,6 +23,23 @@ router.get('/', async(req, res) => {
 
 });
 
+router.get('/itens/:id', async(req, res) => {
+
+    try {
+
+
+        const Itenscomanda = new Comanda(await new ComandaDAO(connection).listarItensComanda(req.params.id))
+
+        res.send(Itenscomanda)
+
+    } catch (e) {
+
+        res.send(e)
+        
+    }
+
+});
+
 router.post('/', async(req, res) => {
 
     try {
@@ -30,6 +47,20 @@ router.post('/', async(req, res) => {
         const novaComanda = new Comanda(req.body)
 
         await new ComandaDAO(connection).cadastrarComanda(novaComanda).then(novaComanda => res.send(novaComanda));
+        
+    } catch (e) {
+
+        res.send(e)
+        
+    }
+
+});
+
+router.post('/itens', async(req, res) => {
+
+    try {
+
+        await new ComandaDAO(connection).acrescentarComanda(req.body).then(addComanda => res.send(addComanda));
         
     } catch (e) {
 

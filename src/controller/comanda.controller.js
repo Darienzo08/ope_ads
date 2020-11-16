@@ -18,7 +18,7 @@ class ComandaDAO {
 
                 // 'INNER JOIN estoque_itens_comanda AS eic ON estCom.id_comanda = eic.id_itens_comanda'
 
-                'SELECT id_comanda, num_mesa, valor_comanda, status_comanda, eic.id_itens_comanda, eic.id_itens FROM estoque_comanda AS estCom', (error, results, fields) => {
+                'SELECT id_comanda, num_mesa, valor_comanda, status_comanda FROM estoque_comanda', (error, results, fields) => {
 
                     if (error) return reject(error);
 
@@ -35,6 +35,40 @@ class ComandaDAO {
                     });
 
                     resolve(arrayComanda)
+                }
+
+            )
+
+        })
+
+    };
+
+
+    async listarItensComanda(idComanda) {
+
+        const arrayItensComanda = [];
+
+        return new Promise((resolve, reject) => {
+
+            this._connection.query(
+
+                'SELECT et.id_item, et.nome_item, et.valor_item FROM estoque_itens_comanda INNER JOIN estoque_itens AS et ON et.id_item = id_itens WHERE id_comanda = ?',
+                [idComanda],(error, results, fields) => {
+
+                    if (error) return reject(error);
+
+                    results.forEach((raw_itens_comanda) => {
+                        arrayItensComanda.push({
+                            //idItensComanda: raw_itens_comanda.id_itens_comanda,
+                            //idItens: raw_itens_comanda.id_itens,
+                            idItem: raw_itens_comanda.id_item,
+                            nomeItem: raw_itens_comanda.nome_item,
+                            valorItem: raw_itens_comanda.valor_item
+                        })
+
+                    });
+
+                    resolve(arrayItensComanda)
                 }
 
             )
@@ -80,8 +114,8 @@ class ComandaDAO {
         return new Promise((resolve, reject) => {
 
             this._connection.query(
-                'INSERT INTO estoque_comanda(id_comanda, num_mesa, valor_comanda, status_comanda) VALUES (?, ?, ?, ?)',
-                [comanda.idComanda, comanda.numMesa, comanda.valorComanda, comanda.statusComanda],
+                'INSERT INTO estoque_comanda(id_comanda, num_mesa, valor_comanda) VALUES (?, ?, ?)',
+                [comanda.idComanda, comanda.numMesa, comanda.valorComanda],
 
 
                 (error, results, fields) => {
@@ -89,8 +123,7 @@ class ComandaDAO {
                     resolve({
                         idComanda: comanda.idComanda,
                         numMesa: comanda.numMesa,
-                        valorComanda: comanda.valorComanda,
-                        statusComanda: comanda.statusComanda
+                        valorComanda: comanda.valorComanda
                     })
                 }
             )
@@ -140,30 +173,27 @@ class ComandaDAO {
         })
 
     }
-/*
+
     async acrescentarComanda(comanda) {
 
         return new Promise((resolve, reject) => {
 
                 this._connection.query(
-                'INSERT INTO estoque_comanda(id_comanda, num_mesa, valor_comanda, status_comanda, eic.id_itens_comanda, eic.id_itens FROM estoque_comanda AS estCom ' +
-                'INNER JOIN estoque_itens_comanda AS eic ON estCom.id_comanda = eic.id_itens_comanda) VALUES (?, ?, ?, ?)',
-                [comanda.idComanda, comanda.numMesa, comanda.valorComanda, comanda.statusComanda],
+                'INSERT INTO estoque_itens_comanda(id_comanda, id_itens) VALUES (?, ?)',
+                [comanda.idComanda, comanda.idItens],
 
 
                 (error, results, fields) => {
                     if (error) return reject(error)
                     resolve({
                         idComanda: comanda.idComanda,
-                        numMesa: comanda.numMesa,
-                        valorComanda: comanda.valorComanda,
-                        statusComanda: comanda.statusComanda
+                        idItens: comanda.idItens
                     })
                 }
             )
         })
     };
-*/
+
 }
 
 module.exports = ComandaDAO;
