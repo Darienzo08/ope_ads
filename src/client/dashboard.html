@@ -45,7 +45,7 @@
         ***********************************-->
         <div class="nav-header">
             <div class="brand-logo">
-                <a href="dashboard.html">
+                <a href="produtos.html">
                     <b class="logo-abbr"><img src="images/logo.png"> </b>
                     <span class="logo-compact"><img src="./images/logo-compact.png" alt=""></span>
                     <span class="brand-title">
@@ -164,52 +164,116 @@
 
             <div class="container-fluid mt-3">
 
-                <div class="card">
-                    <div class="card-body p-0">
+                <div class="row">
 
-                        <h4 class="card-title m-4">Entrada e Saída</h4>
+                    <div class="col-lg-3 col-sm-6">
 
-                        <div class="row m-lg-2 mb-4 p-1">
+                        <div class="card gradient-4">
+                            <div class="card-body">
+                                <h3 class="card-title text-white">Produtos comprados</h3>
+                                <div class="d-inline-block">
+                                    <h2 class="text-white">18</h2>
+                                    <p class="text-white mb-0">mês atual - 2020</p>
+                                </div>
+                                <span class="float-right display-5 opacity-5"><i class="fa fa-shopping-cart"></i></span>
+                            </div>
+                        </div>
+                    </div>
 
-                            <div class="col-12 col-lg-10">
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="card gradient-2">
+                            <div class="card-body">
+                                <h3 class="card-title text-white">Valor gasto</h3>
+                                <div class="d-inline-block">
+                                    <h2 class="text-white">R$ 0,00</h2>
+                                    <p class="text-white mb-0">mês atual - 2020</p>
+                                </div>
+                                <span class="float-right display-5 opacity-5"><i class="fa fa-money"></i></span>
+                            </div>
+                        </div>
+                    </div>
 
-                                <input type="search" class="form-control input-default mt-1"
-                                    placeholder="Buscar produto, fornecedor, preço ou data" id="txt-produto">
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="card gradient-3">
+                            <div class="card-body">
+                                <h3 class="card-title text-white">Vendas realizadas</h3>
+                                <div class="d-inline-block">
+                                    <h2 class="text-white">22</h2>
+                                    <p class="text-white mb-0">mês atual - 2020</p>
+                                </div>
+                                <span class="float-right display-5 opacity-5"><i class="fa fa-users"></i></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="card gradient-4">
+                            <div class="card-body">
+                                <h3 class="card-title text-white">Valor recebido</h3>
+                                <div class="d-inline-block">
+                                    <h2 class="text-white">R$ 0,00</h2>
+                                    <p class="text-white mb-0">mês atual - 2020</p>
+                                </div>
+                                <span class="float-right display-5 opacity-5"><i class="fa fa-users"></i></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-3 col-lg-6 col-sm-6 col-xxl-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Produtos abaixo do limiar</h4>
+
+                                <div id="limiar">
+
+                                    <div class="media border-bottom-1 pt-3 pb-3">
+                                        <div class="media-body">
+                                            <h5>Nome do produto</h5>
+                                            <p class="mb-0">9 produtos ainda em estoque</p>
+                                        </div><span class="text-muted "> limiar 36</span>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-6 col-lg-6 col-sm-6 col-xxl-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Vendas e gastos</h4>
+
+                                <div id="extra-area-chart"></div>
 
                             </div>
+                        </div>
+                    </div>
 
-                            <div class="col-12 col-lg-2">
+                    <div class="col-xl-3 col-lg-6 col-sm-6 col-xxl-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Últimos produtos comprados</h4>
 
-                                <button class="btn mt-2 btn-primary w-100" id="btn-buscar"> Buscar </button>
+                                <div id="compras">
 
+                                    <div class="media border-bottom-1 pt-3 pb-3">
+                                        <div class="media-body">
+                                            <h5>Nome do produto</h5>
+                                            <p class="mb-0">Fornecedor - 19/11</p>
+                                        </div><span class="text-muted ">Qtd. 12</span>
+                                    </div>
+
+                                </div>
                             </div>
-
                         </div>
-
-                        <div class="table">
-                            <table class="table table-striped w-100 m-0 p-0" id="table-entrada">
-                                <thead>
-                                    <tr>
-                                        <th>Produto</th>
-                                        <th>Quantidade</th>
-                                        <th>Fornecedor</th>
-                                        <th>Preço</th>
-                                        <th>Tipo</th>
-                                        <th>Data</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
-                        </div>
-                        
                     </div>
 
                 </div>
 
             </div>
-            <!-- #/ container -->
+
         </div>
+
         <!--**********************************
             Content body end
         ***********************************-->
@@ -239,19 +303,10 @@
     <script src="js/gleek.js"></script>
     <script src="js/styleSwitcher.js"></script>
 
-    <script src="./plugins/tables/js/jquery.dataTables.min.js"></script>
-    <script src="./plugins/tables/js/datatable/dataTables.bootstrap4.min.js"></script>
-    <script src="./plugins/tables/js/datatable-init/datatable-basic.min.js"></script>
-    <script src="./plugins/tables/js/datatable/dataTables.rowReorder.min.js"></script>
-    <script src="./plugins/tables/js/datatable/dataTables.responsive.min.js"></script>
-    <script src="./plugins/tables/js/datatable/dataTables.buttons.min.js"></script>
-    <script src="./plugins/tables/js/buttons.flash.min.js"></script>
-    <script src="./plugins/tables/js/jszip.min.js"></script>
-    <script src="./plugins/tables/js/pdfmake.min.js"></script>
-    <script src="./plugins/tables/js/buttons.html5.min.js"></script>
-    <script src="./plugins/tables/js/buttons.print.min.js"></script>
+    <script src="./plugins/raphael/raphael.min.js"></script>
+    <script src="./plugins/morris/morris.min.js"></script>
 
-    <script src="js/pages/entrada.js"></script>
+    <script src="js/pages/dashboard.js"></script>
     <script src="js/pages/functions.js"></script>
 
 </body>

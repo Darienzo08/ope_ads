@@ -15,6 +15,7 @@ const nomeNovoProduto = $('#nome-novo-produto');
 const descNovoProduto = $('#desc-novo-produto');
 const precoNovoProduto = $('#preco-novo-produto');
 const quantidadeProdutos = $('#qtd-produtos');
+const limiarProdutos = $('#limiar-novo-produto');
 const txtEntrada = $('#txtEntrada');
 
 const modalProduto = $('#modal-produto');
@@ -74,7 +75,6 @@ $(document).ready(function () {
 
         }
     })
-
 
     const qtdSlide = document.getElementById('qtd-slider');
     const qtd = {};
@@ -183,6 +183,7 @@ $(document).ready(function () {
         nomeNovoProduto.val("");
         descNovoProduto.val("");
         precoNovoProduto.val("");
+        limiarProdutos.val("");
 
         modalProduto.modal('show')
 
@@ -194,6 +195,7 @@ $(document).ready(function () {
         novoProduto.nome = nomeNovoProduto.val();
         novoProduto.descricao = descNovoProduto.val();
         novoProduto.preco = precoNovoProduto.val();
+        novoProduto.limiar = limiarProdutos.val();
 
         cadastrarProdutos(novoProduto);
 
@@ -211,6 +213,7 @@ $(document).ready(function () {
         produto.nome = dadosProduto[0]
         produto.descricao = dadosProduto[1]
         produto.preco = dadosProduto[7]
+        produto.limiar = dadosProduto[9]
 
         btnAlterarProduto.removeClass('d-none')
         modalProdutoTitle.text('Alterar produto: ' + produto.nome)
@@ -219,6 +222,7 @@ $(document).ready(function () {
         nomeNovoProduto.val(produto.nome);
         descNovoProduto.val(produto.descricao);
         precoNovoProduto.val(produto.preco);
+        limiarProdutos.val(produto.limiar);
 
     })
 
@@ -228,6 +232,7 @@ $(document).ready(function () {
         produto.nome = nomeNovoProduto.val();
         produto.descricao = descNovoProduto.val();
         produto.preco = precoNovoProduto.val();
+        produto.limiar = limiarProdutos.val();
 
         alterarProduto(produto);
 
@@ -242,6 +247,7 @@ $(document).ready(function () {
         produto.id = dadosProduto[6]
         produto.nome = dadosProduto[0]
         produto.status = dadosProduto[8]
+        produto.limiar = dadosProduto[9]
 
         modalInativarProduto.modal('show');
         modalInativarProdutoTitle.text('Inativar: ' + produto.nome)
@@ -266,6 +272,7 @@ $(document).ready(function () {
         produto.nome = dadosProduto[0]
         produto.status = dadosProduto[8]
         produto.quantidade = dadosProduto[2]
+        produto.limiar = dadosProduto[9]
 
         modalEntrada.modal('show');
     
@@ -349,7 +356,9 @@ function listarProdutos() {
                 // Hidden 07
                 produto.preco,
                 // Hidden 08
-                produto.status
+                produto.status,
+                // Hidden 09
+                produto.limiar
             ])
         })
 
@@ -391,6 +400,7 @@ function cadastrarProdutos(novoProduto) {
         nomeNovoProduto.val("");
         descNovoProduto.val("");
         precoNovoProduto.val("");
+        limiarProdutos.val("");
 
         modalProduto.modal('hide');
 
