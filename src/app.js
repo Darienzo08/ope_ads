@@ -35,6 +35,10 @@ const rotaPratos = require('./routes/pratos.route');
 
 app.use('/pratos', rotaPratos)
 
+const rotaDash = require('./routes/dashboard.route');
+
+app.use('/dashboard', rotaDash)
+
 app.get('/', async(req, res, next) => {
 
     res.sendFile(path.join(__dirname, '../src/client', 'index.html'))
