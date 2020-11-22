@@ -15,7 +15,6 @@ router.get('/quantidade', async (req, res) => {
 
         await new DashboardDao(connection).listarQuantidadeProdutos().then(arrayQtdProduto => res.send(arrayQtdProduto));
 
-
     } catch (error) {
 
         res.send(error)
@@ -30,7 +29,6 @@ router.get('/precos', async (req, res) => {
     try {
 
         await new DashboardDao(connection).listarPrecoTotalProduto().then(arrayPrecos => res.send(arrayPrecos));
-
 
     } catch (error) {
 
@@ -47,7 +45,6 @@ router.get('/vendas', async (req, res) => {
 
         await new DashboardDao(connection).listarVendasTotal().then(arrayVendas => res.send(arrayVendas));
 
-
     } catch (error) {
 
         res.send(error)
@@ -55,7 +52,7 @@ router.get('/vendas', async (req, res) => {
 
 })
 
-router.get('/recebidos', async (req, res) => {
+router.get('/recebido', async (req, res) => {
 
     res.setHeader('Access-Control-Allow-Origin', '*');
 
@@ -63,7 +60,6 @@ router.get('/recebidos', async (req, res) => {
 
         await new DashboardDao(connection).listarValorRecebido().then(array => res.send(array));
 
-
     } catch (error) {
 
         res.send(error)
@@ -71,7 +67,7 @@ router.get('/recebidos', async (req, res) => {
 
 })
 
-router.get('/ultimosProdutosComprados', async (req, res) => {
+router.get('/ultimos', async (req, res) => {
 
     res.setHeader('Access-Control-Allow-Origin', '*');
 
@@ -79,7 +75,6 @@ router.get('/ultimosProdutosComprados', async (req, res) => {
 
         await new DashboardDao(connection).listarUltimosProdutosComprados().then(array => res.send(array));
 
-
     } catch (error) {
 
         res.send(error)
@@ -87,14 +82,13 @@ router.get('/ultimosProdutosComprados', async (req, res) => {
 
 })
 
-router.get('/produtosAbaixoLimiar', async (req, res) => {
+router.get('/limiar', async (req, res) => {
 
     res.setHeader('Access-Control-Allow-Origin', '*');
 
     try {
 
         await new DashboardDao(connection).listarProdutosAbaixoLimiar().then(array => res.send(array));
-
 
     } catch (error) {
 

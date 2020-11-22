@@ -4,7 +4,6 @@ $(document).ready(function () {
 
 })
 
-
 function validarSessao() {
 
     $.ajax({
@@ -18,5 +17,22 @@ function validarSessao() {
         window.location = 'index.html'
 
     })
+
+}
+
+function formatarReal(valor) {
+
+    valor = parseFloat(valor);
+
+    return `R$ ${valor}`
+
+}
+
+function formatarData(valor) {
+
+    valor = valor.split('T')
+    valor = valor[0].split('-')
+
+    return `${valor[2]}/${valor[1]}/${valor[0]}`
 
 }

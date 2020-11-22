@@ -282,6 +282,7 @@ $(document).ready(function () {
 
         produto.idFornecedor = txtFornecedor.val()
         produto.preco = txtPreco.val()
+        produto.quantidade = txtEntrada.val()
 
         entradaProdutos(produto)
 

@@ -29,7 +29,7 @@ function realizarLogin(user) {
 
     }).done(function (resposta) {
 
-        window.location = "produtos.html"
+        window.location = "dashboard.html"
 
         localStorage.setItem('Jwt', resposta.token);
 

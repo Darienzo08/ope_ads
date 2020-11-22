@@ -40,7 +40,7 @@ class DashDao {
 
             this._connection.query(
 
-                'SELECT SUM(valor_comanda) AS valor FROM estoque_comanda WHERE MONTH(data_comanda) = MONTH(NOW())', (error, results, fields) => {
+                'SELECT COUNT(*) AS valor FROM estoque_comanda WHERE MONTH(data_comanda) = MONTH(NOW())', (error, results, fields) => {
 
                     if (error) return reject(error);
 
@@ -56,11 +56,9 @@ class DashDao {
 
         return new Promise((resolve, reject) => {
 
-            //WHERE MONTH(data_comanda) = MONTH(NOW())
-
             this._connection.query(
 
-                'SELECT SUM(valor_comanda) AS valor FROM estoque_comanda', (error, results, fields) => {
+                'SELECT SUM(valor_comanda) AS valor FROM estoque_comanda WHERE MONTH(data_comanda) = MONTH(NOW())', (error, results, fields) => {
 
                     if (error) return reject(error);
 
@@ -107,9 +105,10 @@ class DashDao {
 
             this._connection.query(
 
-                'SELECT produto_entrada, prod.nome_produto, qtd_entrada, id_fornecedor FROM estoque_entrada AS ent ' +  
+                'SELECT produto_entrada, nome_produto, qtd_entrada, data_entrada, forn.nome_fornecedor  FROM estoque_entrada AS ent ' +  
                 'INNER JOIN estoque_produto AS prod ON prod.id_produto = ent.produto_entrada ' +
-                'INNER JOIN estoque_fornecedores AS forn ON forn.cnpj_fornecedor = ent.id_fornecedor  WHERE MONTH(data_entrada) = MONTH(NOW()) order by produto_entrada desc LIMIT 5', (error, results, fields) => {
+                'INNER JOIN estoque_fornecedores AS forn ON forn.cnpj_fornecedor = ent.id_fornecedor ' +
+                'WHERE MONTH(data_entrada) = MONTH(NOW()) order by data_entrada desc LIMIT 5', (error, results, fields) => {
 
                     if (error) return reject(error);
 
@@ -119,6 +118,7 @@ class DashDao {
                             nomeProduto: raw_entrada.nome_produto,
                             produtoEntrada: raw_entrada.produto_entrada,
                             quantidadeEntrada: raw_entrada.qtd_entrada,
+                            data_entrada: raw_entrada.data_entrada,
                             nomeFornecedor: raw_entrada.nome_fornecedor
                         });
                     });
