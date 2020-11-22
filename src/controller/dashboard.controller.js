@@ -77,7 +77,7 @@ class DashDao {
 
             this._connection.query(
 
-                'SELECT nome_produto, qtd_produto, limiar_produto FROM estoque_produto WHERE qtd_produto < limiar_produto', (error, results, fields) => {
+                'SELECT nome_produto, qtd_produto, limiar_produto, status_produto FROM estoque_produto WHERE qtd_produto < limiar_produto AND status_produto = 1', (error, results, fields) => {
 
                     if (error) return reject(error);
 
@@ -86,7 +86,8 @@ class DashDao {
                         arrayProdutos.push({
                             nome: raw_product.nome_produto,
                             quantidade: raw_product.qtd_produto,
-                            limiar: raw_product.limiar_produto
+                            limiar: raw_product.limiar_produto,
+                            status: raw_product.status_produto,
                         });
                     });
 
@@ -105,10 +106,10 @@ class DashDao {
 
             this._connection.query(
 
-                'SELECT produto_entrada, nome_produto, qtd_entrada, data_entrada, forn.nome_fornecedor  FROM estoque_entrada AS ent ' +
+                'SELECT produto_entrada, nome_produto, prod.status_produto, qtd_entrada, data_entrada, forn.nome_fornecedor  FROM estoque_entrada AS ent ' +
                 'INNER JOIN estoque_produto AS prod ON prod.id_produto = ent.produto_entrada ' +
                 'INNER JOIN estoque_fornecedores AS forn ON forn.cnpj_fornecedor = ent.id_fornecedor ' +
-                'WHERE MONTH(data_entrada) = MONTH(NOW()) order by data_entrada desc LIMIT 5', (error, results, fields) => {
+                'WHERE MONTH(data_entrada) = MONTH(NOW()) AND prod.status_produto = 1 order by data_entrada desc LIMIT 10', (error, results, fields) => {
 
                     if (error) return reject(error);
 
@@ -119,7 +120,8 @@ class DashDao {
                             produtoEntrada: raw_entrada.produto_entrada,
                             quantidadeEntrada: raw_entrada.qtd_entrada,
                             data_entrada: raw_entrada.data_entrada,
-                            nomeFornecedor: raw_entrada.nome_fornecedor
+                            nomeFornecedor: raw_entrada.nome_fornecedor,
+                            status: raw_entrada.status_produto,
                         });
                     });
 
