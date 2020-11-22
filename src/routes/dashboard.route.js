@@ -97,4 +97,19 @@ router.get('/limiar', async (req, res) => {
 
 })
 
+router.get('/gastos', async (req, res) => {
+
+    res.setHeader('Access-Control-Allow-Origin', '*');
+
+    try {
+
+        await new DashboardDao(connection).listarValorGasto().then(array => res.send(array));
+
+    } catch (error) {
+
+        res.send(error)
+    }
+
+})
+
 module.exports = router;
