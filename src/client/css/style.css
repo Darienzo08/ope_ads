@@ -14697,3 +14697,16 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
       color: #fff; }
 
 /*# sourceMappingURL=style.css.map */
+
+/* CSS customizado */
+
+.entrada {
+
+  color: #198d26;
+}
+
+.saida {
+
+  color: #e22c2c;
+
+}

@@ -36,7 +36,8 @@ $(document).ready(function () {
 
     // Inicialização da DataTable
     dtProducts = $("#table-products").DataTable({
-        dom: 'tp',
+        dom: 'Btp',
+        buttons: [ 'copy', 'csv', 'excel', 'print' ],
         language: {
             info: "Mostrando _START_ até _END_ de _TOTAL_ registros",
             infoEmpty: "Não há nada para mostrar aqui",
@@ -164,6 +165,9 @@ $(document).ready(function () {
 
     // Lista os produtos
     listarProdutos();
+
+    // Carrega o select com os fornecedores
+    listarFornecedores();
 
     // Faz a busca na tabela
     btnBuscar.click(function () {
@@ -550,6 +554,35 @@ function saidaProdutos(produto) {
         quantidadeProdutos.val("");
 
         btnSaida.prop('disabled', false);
+
+    })
+
+}
+
+function listarFornecedores() {
+
+    $.ajax({
+        url: '/fornecedores', // URL do recurso requisitado
+        method: 'GET', // método de requisição solicitado
+        dataType: 'json',
+        contentType: 'application/json', // tipo de resposta esperada do servidor
+        data: JSON.stringify(produto) // dados a serem enviados no corpo da requisiçãso
+
+    }).done(function (resposta) {
+
+        $.each(resposta, function (index, fornecedor) {
+
+            txtFornecedor.append(
+
+            `<option value="${fornecedor.cnpj}"> ${fornecedor.nomeFornecedor} </option>`
+
+            )
+
+        })
+
+    }).fail(function (error) {
+
+        alert('Ocorreu um erro, tente novamente')
 
     })
 

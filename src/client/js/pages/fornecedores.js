@@ -23,7 +23,8 @@ $(document).ready(function () {
 
     // Inicialização da DataTable
     dtFornecedores = $("#table-fornecedor").DataTable({
-        dom: 'tp',
+        dom: 'Btp',
+        buttons: [ 'copy', 'csv', 'excel', 'print' ],
         language: {
             info: "Mostrando _START_ até _END_ de _TOTAL_ registros",
             infoEmpty: "Não há nada para mostrar aqui",

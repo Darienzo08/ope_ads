@@ -41,8 +41,18 @@ $(document).ready(function () {
                 axis: 'both',
                 color: "#0e8d1f"
             })
+        },
+
+        fnRowCallback: function (nRow, aData, iDisplayIndex) {
+
+            var tipo = aData[4];
+
+            if (tipo == 'Entrada') $(nRow).addClass('h5 saida');
+
+            else $(nRow).addClass('h5 entrada');
 
         }
+
     })
 
     listarSaida();
