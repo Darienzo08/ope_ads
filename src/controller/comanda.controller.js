@@ -18,7 +18,7 @@ class ComandaDAO {
 
                 // 'INNER JOIN estoque_itens_comanda AS eic ON estCom.id_comanda = eic.id_itens_comanda'
 
-                'SELECT id_comanda, num_mesa, valor_comanda, status_comanda FROM estoque_comanda', (error, results, fields) => {
+                'SELECT * FROM estoque_comanda', (error, results, fields) => {
 
                     if (error) return reject(error);
 
@@ -27,6 +27,7 @@ class ComandaDAO {
                             idComanda: raw_comanda.id_comanda,
                             numMesa: raw_comanda.num_mesa,
                             valorComanda: raw_comanda.valor_comanda,
+                            dataComanda: results[0].data_comanda,
                             statusComanda: raw_comanda.status_comanda,
                             //idItensComanda: raw_comanda.id_itens_comanda,
                             //idItens: raw_comanda.id_itens
@@ -95,6 +96,7 @@ class ComandaDAO {
                         idComanda: results[0].id_comanda,
                         numMesa: results[0].num_mesa,
                         valorComanda: results[0].valor_comanda,
+                        dataComanda: results[0].data_comanda,
                         statusComanda: results[0].status_comanda
                     });
 
