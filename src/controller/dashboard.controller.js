@@ -106,7 +106,7 @@ class DashDao {
 
             this._connection.query(
 
-                'SELECT produto_entrada, nome_produto, prod.status_produto, qtd_entrada, data_entrada, forn.nome_fornecedor  FROM estoque_entrada AS ent ' +
+                'SELECT produto_entrada, nome_produto, prod.status_produto, qtd_entrada, data_entrada, forn.nome_fornecedor FROM estoque_entrada AS ent ' +
                 'INNER JOIN estoque_produto AS prod ON prod.id_produto = ent.produto_entrada ' +
                 'INNER JOIN estoque_fornecedores AS forn ON forn.cnpj_fornecedor = ent.id_fornecedor ' +
                 'WHERE MONTH(data_entrada) = MONTH(NOW()) AND prod.status_produto = 1 order by data_entrada desc LIMIT 10', (error, results, fields) => {
@@ -143,7 +143,7 @@ class DashDao {
                 'SELECT SUM(valor_comanda) AS vendas, e.valor AS gastos, e.data FROM estoque_comanda AS c ' +
                 'RIGHT JOIN (SELECT SUM(preco_entrada) AS valor, DATE(data_entrada) AS data ' +
                 'FROM estoque_entrada GROUP BY DATE(data_entrada)) AS e ' +
-                'ON e.data = DATE(data_comanda) GROUP BY e.data ORDER BY e.data LIMIT 7', (error, results, fields) => {
+                'ON e.data = DATE(data_comanda) GROUP BY e.data ORDER BY e.data desc LIMIT 7', (error, results, fields) => {
 
                     if (error) return reject(error);
 

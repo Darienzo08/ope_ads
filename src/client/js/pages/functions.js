@@ -22,7 +22,7 @@ function validarSessao() {
 
 function formatarReal(valor) {
 
-    valor = parseFloat(valor);
+    valor = parseFloat(valor).toFixed(2);
 
     return `R$ ${valor}`
 

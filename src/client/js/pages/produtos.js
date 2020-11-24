@@ -524,6 +524,8 @@ function entradaProdutos(produto) {
 
         btnEntrada.prop('disabled', false);
 
+        modalEntrada.modal('hide')
+
     })
 
 }
@@ -549,11 +551,11 @@ function saidaProdutos(produto) {
 
     }).always(function () {
 
-        montarSelectProdutos();
-
         quantidadeProdutos.val("");
 
         btnSaida.prop('disabled', false);
+
+        modalSaida.modal('hide')
 
     })
 
