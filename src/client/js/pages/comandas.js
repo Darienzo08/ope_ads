@@ -18,6 +18,7 @@ $(document).ready(function () {
                 previous: "Anterior"
             }
         },
+        "order": [[ 4, "asc" ]],
         responsive: true,
         deferRender: true,
         scrollY: 540,
@@ -68,13 +69,17 @@ function listarComanda() {
 
             status = '<span class="badge badge-pill badge-danger">Fechada</span>'
 
-            if (comanda.statusComanda == 1) status = '<span class="badge badge-pill badge-success">Aberta</span>';
+            if (comanda.statusComanda == 0) status = '<span class="badge badge-pill badge-success">Aberta</span>';
 
             var data = comanda.dataComanda.split('.')
 
             data = data[0].replace('T', ' ')
 
             data = data.split(' ')
+
+            horario = data[1].split(':')
+
+            horario = `${horario[0]-3}:${horario[1]}:${horario[0]}`
 
             dtComandas.row.add([
                 // Coluna 00
@@ -84,7 +89,7 @@ function listarComanda() {
                 // Coluna 02
                 comanda.numMesa,
                 // Coluna 03
-                `${formatarData(data[0])} ${data[1]}`,
+                `${data[0]} ${horario}`,
                 // Coluna 04
                 status
             ])

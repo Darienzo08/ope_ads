@@ -18,7 +18,7 @@ class ComandaDAO {
 
                 // 'INNER JOIN estoque_itens_comanda AS eic ON estCom.id_comanda = eic.id_itens_comanda'
 
-                'SELECT * FROM estoque_comanda ORDER BY status_comanda, id_comanda', (error, results, fields) => {
+                'SELECT * FROM estoque_comanda ORDER BY status_comanda, data_comanda DESC', (error, results, fields) => {
 
                     if (error) return reject(error);
 
@@ -28,7 +28,7 @@ class ComandaDAO {
                             numMesa: raw_comanda.num_mesa,
                             valorComanda: raw_comanda.valor_comanda.toFixed(2),
                             statusComanda: raw_comanda.status_comanda,
-                            dataComanda: results[0].data_comanda,
+                            dataComanda: new Date(raw_comanda.data_comanda),
                             //idItensComanda: raw_comanda.id_itens_comanda,
                             //idItens: raw_comanda.id_itens
                         })

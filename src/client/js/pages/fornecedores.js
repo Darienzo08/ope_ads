@@ -114,8 +114,7 @@ function listarFornecedores() {
                 // Coluna 02
                 fornecedor.enderecoFornecedor,
                 // Coluna 03
-                ''
-
+                '<a href="javascript:void(0)"><i class="fa fa-pencil color-muted mr-2"></i></a>'
             ])
         })
 
