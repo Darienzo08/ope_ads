@@ -182,8 +182,8 @@ class DashDao {
                     results.forEach((raw_dados) => {
 
                         arrayValoresGastos.push({
-                            vendas: raw_dados.vendas,
-                            gastos: raw_dados.gastos,
+                            vendas: raw_dados.vendas.toFixed(2),
+                            gastos: raw_dados.gastos.toFixed(2),
                             data: raw_dados.data
                         })
 
