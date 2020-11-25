@@ -27,7 +27,7 @@ class ProdutoDAO {
                         arrayProdutos.push({
                             id: raw_product.id_produto,
                             nome: raw_product.nome_produto,
-                            preco: raw_product.preco_produto,
+                            preco: raw_product.preco_produto.toFixed(2),
                             descricao: raw_product.descricao_produto,
                             status: raw_product.status_produto,
                             quantidade: raw_product.qtd_produto,
