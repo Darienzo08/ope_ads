@@ -21,7 +21,7 @@ $(document).ready(function () {
         rowReorder: {
             selector: 'td:nth-child(2)'
         },
-        order: [[ 5, "asc" ]],
+        order: [[ 5, "desc" ]],
         responsive: true,
         deferRender: true,
         scrollY: 540,
