@@ -140,23 +140,66 @@ class DashDao {
 
             this._connection.query(
 
-                'SELECT SUM(valor_comanda) AS vendas, e.valor AS gastos, e.data FROM estoque_comanda AS c ' +
-                'RIGHT JOIN (SELECT SUM(preco_entrada) AS valor, DATE(data_entrada) AS data ' +
-                'FROM estoque_entrada GROUP BY DATE(data_entrada)) AS e ' +
-                'ON e.data = DATE(data_comanda) GROUP BY e.data ORDER BY e.data desc LIMIT 7', (error, results, fields) => {
+                "CREATE TEMPORARY TABLE dados SELECT * FROM ( " +
+
+                    "SELECT SUM(valor_comanda) AS 'vendas', DATE(data_comanda) AS 'data_venda', NULL AS 'gastos', NULL AS 'data_gasto' FROM estoque_comanda " +
+                    
+                    "GROUP BY data_venda " + "UNION ALL " +
+                    
+                    "SELECT NULL AS 'vendas', NULL AS 'data_venda', SUM(preco_entrada) AS 'gastos', DATE(data_entrada) AS 'data_gasto' FROM estoque_entrada " +
+                    
+                    "GROUP BY data_gasto) AS vg; ", (error, results, fields) => {
 
                     if (error) return reject(error);
 
-                    results.forEach((raw_valores) => {
+                }
+            )
+
+            this._connection.query(
+
+                "UPDATE dados SET " +
+                "data_gasto = CASE " +
+                "    WHEN data_gasto IS NOT NULL THEN data_gasto " +
+                "    ELSE data_venda " +
+                "END, " +
+                "data_venda = CASE " +
+                "    WHEN data_venda IS NOT NULL THEN data_venda " +
+                "    ELSE data_gasto " +
+                "END;", (error, results, fields) => {
+
+                    if (error) return reject(error);
+
+                }
+            )
+
+            this._connection.query(
+
+                "SELECT SUM(vendas) AS 'vendas', SUM(gastos) AS 'gastos' , data_venda AS 'data' FROM dados " +
+                "GROUP BY data_venda, data_gasto ORDER BY data DESC LIMIT 7; ", (error, results, fields) => {
+
+                    if (error) return reject(error);
+
+                    results.forEach((raw_dados) => {
 
                         arrayValoresGastos.push({
-                            vendas: raw_valores.vendas,
-                            gastos: raw_valores.gastos,
-                            data: raw_valores.data
-                        });
-                    });
+                            vendas: raw_dados.vendas,
+                            gastos: raw_dados.gastos,
+                            data: raw_dados.data
+                        })
+
+                    })
 
                     resolve(arrayValoresGastos);
+
+                }
+            )
+
+            this._connection.query(
+
+                "DROP TEMPORARY TABLE dados;", (error, results, fields) => {
+
+                    if (error) return reject(error);
+
                 }
             )
 
