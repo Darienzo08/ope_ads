@@ -219,6 +219,13 @@ class ComandaDAO {
 
             if (item.id == null) { resolve({msg: 'Item não encontrado'}) }
 
+            if (item.produto != null) {
+
+                this._connection.query('INSERT INTO estoque_saida(produto_saida, qtd_saida) VALUES(?, 1)'
+                [item.produto], (error, results, fields) => { if (error) return reject(error) });
+
+            }
+
             this._connection.query(
                 'UPDATE estoque_comanda ' +
                 'SET valor_comanda = valor_comanda + ? ' +
