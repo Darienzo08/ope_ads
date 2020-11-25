@@ -226,7 +226,7 @@ class ComandaDAO {
                 [item.valor, comanda.idComanda],
                 (error, results, fields) => { if (error) return reject(error) })
 
-            resolve({msg: 'Item acrescentado a comanda', valor: item.valor});
+            resolve({nomeItem: item.nome, valorItem: item.valor});
 
         })
     };
