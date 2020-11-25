@@ -77,20 +77,35 @@ $(document).ready(function () {
         nomeFornecedorNovoFornecedor.val("");
         enderecoFornecedorNovoFornecedor.val("");
 
+        modalFornecedorTitle.text("Cadastrar Fornecedor")
+
         modalFornecedor.modal('show')
     })
+    
 
     btnCadastrarNovoFornecedor.click(function () {
 
         novoFornecedor.cnpj = cnpjNovoFornecedor.val();
         novoFornecedor.nomeFornecedor = nomeFornecedorNovoFornecedor.val();
-
-        console.log(novoFornecedor.nomeFornecedor)
-
         novoFornecedor.enderecoFornecedor = enderecoFornecedorNovoFornecedor.val();
 
         cadastrarFornecedores(novoFornecedor);
 
+    })
+
+    dtFornecedores.off('click.fa-pencil').on('click.fa-pencil', 'tr td a i.fa-pencil', function () {
+
+        const row = $(this).closest("tr")
+        const dadosProduto = dtFornecedores.row(row).data()
+
+        cnpjNovoFornecedor.val(dadosProduto[0])
+        nomeFornecedorNovoFornecedor.val(dadosProduto[1])
+        enderecoFornecedorNovoFornecedor.val(dadosProduto[2])
+
+        modalFornecedorTitle.text("Alterar Fornecedor")
+
+        modalFornecedor.modal('show')
+    
     })
 
 });

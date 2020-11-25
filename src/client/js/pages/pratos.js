@@ -77,7 +77,8 @@ function listarPratos() {
                 // Coluna 02
                 status,
                 // Coluna 03
-                "Ações"
+                '<a href="javascript:void(0)"><i class="fa fa-pencil color-muted mr-2"></i></a>' +
+                '<a href="javascript:void(0)"><i class="fa fa-close color-danger mr-2"></i></a>'
             ])
         })
 
