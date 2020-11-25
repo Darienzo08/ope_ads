@@ -129,6 +129,7 @@ class ComandaDAO {
                     })
                 }
             )
+
         })
     };
 
@@ -176,23 +177,47 @@ class ComandaDAO {
 
     }
 
+    async listarItem(id) {
+
+        return new Promise((resolve, reject) => {
+
+            this._connection.query(
+            'SELECT * FROM estoque_itens WHERE id_item = ?',
+            [id],
+
+            (error, results, fields) => {
+                if (error) return reject(error)
+                resolve({
+                    id: results[0].id_item,
+                    nome: results[0].nome_item,
+                    valor: results[0].valor_item,
+                    produto: results[0].produto_item,
+                    status: results[0].status_item
+                })
+            })
+
+        })
+
+    }
+
     async acrescentarComanda(comanda) {
 
         return new Promise((resolve, reject) => {
 
-                this._connection.query(
+            this._connection.query(
                 'INSERT INTO estoque_itens_comanda(id_comanda, id_itens) VALUES (?, ?)',
                 [comanda.idComanda, comanda.idItens],
+                (error, results, fields) => { if (error) return reject(error) })
 
+            const item = this.listarItem(comanda.idItens);
 
-                (error, results, fields) => {
-                    if (error) return reject(error)
-                    resolve({
-                        idComanda: comanda.idComanda,
-                        idItens: comanda.idItens
-                    })
-                }
-            )
+            this._connection.query(
+                'UPDATE estoque_comanda' +
+                'SET valor_comanda = valor_comanda + ?' +
+                'WHERE id_comanda = ?;',
+                [item.valor, comanda.idComanda],
+                (error, results, fields) => { if (error) return reject(error) })
+
         })
     };
 
