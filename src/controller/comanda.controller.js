@@ -187,13 +187,19 @@ class ComandaDAO {
 
             (error, results, fields) => {
                 if (error) return reject(error)
-                resolve({
-                    id: results[0].id_item,
-                    nome: results[0].nome_item,
-                    valor: results[0].valor_item,
-                    produto: results[0].produto_item,
-                    status: results[0].status_item
+
+                results.forEach((raw_item) => {
+
+                    resolve({
+                        id: raw_item.id_item,
+                        nome: raw_item.nome_item,
+                        valor: raw_item.valor_item,
+                        produto: raw_item.produto_item,
+                        status: raw_item.status_item
+                    })
+
                 })
+
             })
 
         })
@@ -211,12 +217,16 @@ class ComandaDAO {
 
             const item = this.listarItem(comanda.idItens);
 
+            if (item.id == null) { resolve({msg: 'Item não ecncontrado'}) }
+
             this._connection.query(
-                'UPDATE estoque_comanda' +
-                'SET valor_comanda = valor_comanda + ?' +
+                'UPDATE estoque_comanda ' +
+                'SET valor_comanda = valor_comanda + ? ' +
                 'WHERE id_comanda = ?;',
                 [item.valor, comanda.idComanda],
                 (error, results, fields) => { if (error) return reject(error) })
+
+            resolve({msg: 'Item acrescentado a comanda'});
 
         })
     };
