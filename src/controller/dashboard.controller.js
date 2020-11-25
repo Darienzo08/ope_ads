@@ -174,7 +174,7 @@ class DashDao {
 
             this._connection.query(
 
-                "SELECT SUM(vendas) AS 'vendas', SUM(gastos) AS 'gastos' , data_venda AS 'data' FROM dados " +
+                "SELECT IFNULL(SUM(vendas),0) AS 'vendas', IFNULL(SUM(gastos),0) AS 'gastos' , data_venda AS 'data' FROM dados " +
                 "GROUP BY data_venda, data_gasto ORDER BY data DESC LIMIT 7; ", (error, results, fields) => {
 
                     if (error) return reject(error);
