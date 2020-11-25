@@ -27,8 +27,8 @@ class ComandaDAO {
                             idComanda: raw_comanda.id_comanda,
                             numMesa: raw_comanda.num_mesa,
                             valorComanda: raw_comanda.valor_comanda,
-                            dataComanda: results[0].data_comanda,
                             statusComanda: raw_comanda.status_comanda,
+                            dataComanda: results[0].data_comanda,
                             //idItensComanda: raw_comanda.id_itens_comanda,
                             //idItens: raw_comanda.id_itens
                         })

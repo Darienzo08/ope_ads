@@ -143,13 +143,13 @@
                                 <label for="nomeFornecedorNovoFornecedor"><b>Nome do fornecedor: </b></label>
                             </div>
                             <div class="col-12 mb-2">
-                                <textarea class="form-control h-100 w-100" id="nomeFornecedorNovoFornecedor"></textarea>
+                                <input type="text" class="form-control h-100 w-100" id="nomeFornecedorNovoFornecedor">
                             </div>
 
-                            <div class="col-4 mt-3">
+                            <div class="col-12 mt-3">
                                 <label for="enderecoFornecedorNovoFornecedor"><b>Endereço do fornecedor: </b></label>
                             </div>
-                            <div class="col-8">
+                            <div class="col-12">
                                 <input type="text" class="form-control h-100" id="enderecoFornecedorNovoFornecedor">
                             </div>
 
@@ -165,86 +165,7 @@
             </div>
         </div>
 
-        <div class="modal fade" id="modal-entrada-fornecedor">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Fornecedor</h5>
-                        <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
-                        </button>
-                    </div>
-
-                    <div class="modal-body">
-                        <label>Digite o cnpj do fornecedor:</label>
-                        <input type="text" class="form-control" id="txtCnpjForncedor"></input>
-                        <label>Digite o nome do fornecedor:</label>
-                        <input type="text" class="form-control" id="txtNomeFornecedor"></input>
-                        <label>Digite o endereço do fornecedor:</label>
-                        <input type="text" class="form-control" id="txtEnderecoFornecedor"></input>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                        <button type="button" class="btn btn-primary" data-dismiss="modal"
-                            id="btnEntradaFornecedor">Confirmar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!--fornecedor-->
-
-        <div class="modal fade" id="modal-saida">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Saida</h5>
-                        <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
-                        </button>
-                    </div>
-
-                    <div class="modal-body">
-                        <label>Digite a quantidade:</label>
-                        <input type="text" class="form-control" id="txtQtdSaida"></input>
-
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                        <button type="button" class="btn btn-primary" data-dismiss="modal"
-                            id="btnSaida">Confirmar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="modal fade" id="modal-inativar-produto">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modal-inativar-produto-title"></h5>
-                        <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
-                        </button>
-                    </div>
-
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-12">
-
-                                <p>Tem certeza que deseja inativar o produto, esta ação poderá ser desfeita
-                                    posteriormente</p>
-
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                        <button type="button" class="btn btn-danger" id="inativar-produto">Confirmar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <!--**********************************
             Modals End
