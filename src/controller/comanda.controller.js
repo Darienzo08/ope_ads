@@ -208,16 +208,16 @@ class ComandaDAO {
 
     async acrescentarComanda(comanda) {
 
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
 
             this._connection.query(
                 'INSERT INTO estoque_itens_comanda(id_comanda, id_itens) VALUES (?, ?)',
                 [comanda.idComanda, comanda.idItens],
                 (error, results, fields) => { if (error) return reject(error) })
 
-            const item = this.listarItem(comanda.idItens);
+            const item = await this.listarItem(comanda.idItens);
 
-            if (item.id == null) { resolve({msg: 'Item não ecncontrado'}) }
+            if (item.id == null) { resolve({msg: 'Item não encontrado'}) }
 
             this._connection.query(
                 'UPDATE estoque_comanda ' +
