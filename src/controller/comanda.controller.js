@@ -210,6 +210,8 @@ class ComandaDAO {
 
         return new Promise(async (resolve, reject) => {
 
+            const retorno = [];
+
             this._connection.query(
                 'INSERT INTO estoque_itens_comanda(id_comanda, id_itens) VALUES (?, ?)',
                 [comanda.idComanda, comanda.idItens],
@@ -221,8 +223,15 @@ class ComandaDAO {
 
             if (item.produto != null) {
 
-                this._connection.query('INSERT INTO estoque_saida(produto_saida, qtd_saida) VALUES(?, 1)'
-                [item.produto], (error, results, fields) => { if (error) return reject(error) });
+                this._connection.query(
+                    'INSERT INTO estoque_saida(produto_saida, qtd_saida) VALUES(?, 1)',
+                    [item.produto], (error, results, fields) => { if (error) return reject(error) }
+                )
+
+                this._connection.query(
+                    'UPDATE estoque_produto SET qtd_produto = qtd_produto - 1 WHERE id_produto = ?',
+                    [item.produto], (error, results, fields) => { if (error) return reject(error.code) }
+                )
 
             }
 
